@@ -1,12 +1,10 @@
 <template>
-<div>
-  用户注册界面
-</div>
+  <h2>线路</h2>
 </template>
 
 <script>
     export default {
-        name: "userRegistry"
+        name: "route"
     }
 </script>
 

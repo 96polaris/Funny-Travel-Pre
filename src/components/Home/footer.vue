@@ -1,12 +1,12 @@
 <template>
-<div>
-  用户注册界面
-</div>
+    <div>
+      <h3>这是页面底部</h3>
+    </div>
 </template>
 
 <script>
     export default {
-        name: "userRegistry"
+        name: "footer"
     }
 </script>
 

@@ -1,15 +1,14 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+
 import HelloWorld from '@/components/HelloWorld'
 
-Vue.use(Router)
+//导入组件
 
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }
-  ]
-})
+import nav from '../components/Home/nav.vue'
+import footer from '../components/Home/footer.vue'
+import center from '../components/Home/center.vue'
+
+export const routes=[
+  {path:'',}
+
+]
+
