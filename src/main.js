@@ -2,8 +2,12 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
 // 导入并使用路由模块
 import VueRouter from 'vue-router'
+
 Vue.use(VueRouter)
 
 //导入配置路由的文件
