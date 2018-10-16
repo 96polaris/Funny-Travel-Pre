@@ -9,7 +9,7 @@ import userregistry from '../components/User/userRegistry'
 export const routes=[
   {path:'/',component:center},
   {path:'/login',component:userlogin},
-  {path:'/addUser',component:userregistry},
+  {path:'/registry',component:userregistry},
 
 
 

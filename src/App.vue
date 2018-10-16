@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="index">
     <!--页面顶部导航内容-->
     <home-header></home-header>
     <router-view></router-view>
@@ -41,6 +41,10 @@
 </script>
 
 <style>
+  .index{
+    margin: 0;
+    padding: 0;
+  }
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
