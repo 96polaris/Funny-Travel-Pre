@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>玩景点</h3>
-  <ul>
+  <ul v-for="i in scenic">
     <li >
       <div v-for="(value,key,index) in scenic">
         <img src=""/>
