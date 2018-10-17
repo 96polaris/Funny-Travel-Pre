@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : mybb
+ Source Server         : myServer
  Source Server Type    : MySQL
  Source Server Version : 80012
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 17/10/2018 16:35:47
+ Date: 17/10/2018 21:02:20
 */
 
 SET NAMES utf8mb4;
@@ -29,8 +29,8 @@ CREATE TABLE `activity`  (
   `endTime` date NULL DEFAULT NULL,
   `personNum` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `money` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `telNum` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `activityIntroduce` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `telNum` int(11) NULL DEFAULT NULL,
+  `activityIntroduce` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `manageCheck` int(11) NOT NULL DEFAULT 2,
   `user_userId` int(11) NOT NULL,
   PRIMARY KEY (`activityId`) USING BTREE,
@@ -39,27 +39,21 @@ CREATE TABLE `activity`  (
   INDEX `activityId_2`(`activityId`) USING BTREE,
   INDEX `activityId_3`(`activityId`) USING BTREE,
   INDEX `activityId_4`(`activityId`) USING BTREE,
-  INDEX `activityId_5`(`activityId`) USING BTREE,
-  INDEX `activityId_6`(`activityId`) USING BTREE,
-  INDEX `activityId_7`(`activityId`) USING BTREE,
-  INDEX `activityId_8`(`activityId`) USING BTREE,
-  INDEX `activityId_9`(`activityId`) USING BTREE,
   CONSTRAINT `fk_activity_user1` FOREIGN KEY (`user_userId`) REFERENCES `user` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of activity
 -- ----------------------------
-INSERT INTO `activity` VALUES (1, '拙政园一日游', '1', '2018-10-18', '2018-10-18', '4', '100', '13598139885', '拙政园是最具特色的南方园林', 2, 1);
-INSERT INTO `activity` VALUES (2, '金鸡湖观光', '2', '2018-10-17', '2018-10-19', '2', '0', '12345678912', '金鸡湖是全国最大的内陆湖', 2, 866);
-INSERT INTO `activity` VALUES (3, '寒山寺领略古刹韵味', '1', '2018-10-18', '2018-10-18', '5', '50', '14725836901', '寒山寺因一首古诗而流传至今', 2, 868);
+INSERT INTO `activity` VALUES (12, '苏州', '3', '2018-10-01', '2018-10-03', '10', '200', 1231231322, '旅游', 2, 1);
+INSERT INTO `activity` VALUES (123321, '苏州', '3', '2018-10-01', '2018-10-03', '10', '200', 1231231322, '旅游', 2, 1);
 
 -- ----------------------------
 -- Table structure for activitycomment
 -- ----------------------------
 DROP TABLE IF EXISTS `activitycomment`;
 CREATE TABLE `activitycomment`  (
-  `activityCommentId` int(11) NOT NULL AUTO_INCREMENT,
+  `activityCommentId` int(11) NOT NULL,
   `activityTime` date NULL DEFAULT NULL,
   `activityCommentContent` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `activity_activityId` int(11) NOT NULL,
@@ -68,17 +62,14 @@ CREATE TABLE `activitycomment`  (
   PRIMARY KEY (`activityCommentId`) USING BTREE,
   INDEX `fk_activityComment_activity1_idx`(`activity_activityId`) USING BTREE,
   CONSTRAINT `fk_activityComment_activity1` FOREIGN KEY (`activity_activityId`) REFERENCES `activity` (`activityid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of activitycomment
 -- ----------------------------
-INSERT INTO `activitycomment` VALUES (1, '2018-10-18', '很不错的一次旅行', 1, 2, 1);
-INSERT INTO `activitycomment` VALUES (6, '2018-10-26', '终于看到了梦寐以求的园林风光', 1, 2, 866);
-INSERT INTO `activitycomment` VALUES (7, '2018-11-01', '你好啊 江南', 2, 2, 844);
-INSERT INTO `activitycomment` VALUES (8, '2018-10-25', '赞', 2, 2, 844);
-INSERT INTO `activitycomment` VALUES (9, '2018-10-21', '哎 美哭了', 2, 2, 1);
-INSERT INTO `activitycomment` VALUES (10, '2018-10-23', '很好', 3, 2, 888);
+INSERT INTO `activitycomment` VALUES (1, '2018-09-10', '很好玩', 12, 1, 1);
+INSERT INTO `activitycomment` VALUES (2, '2018-09-09', '一般吧，不舒服', 12, 1, 866);
+INSERT INTO `activitycomment` VALUES (3, '2018-09-09', '哈哈哈', 123321, 1, 832);
 
 -- ----------------------------
 -- Table structure for collection
@@ -112,7 +103,7 @@ INSERT INTO `collection` VALUES (12, 350, 253, 832);
 -- ----------------------------
 DROP TABLE IF EXISTS `joinactivity`;
 CREATE TABLE `joinactivity`  (
-  `joinActivityId` int(11) NOT NULL AUTO_INCREMENT,
+  `joinActivityId` int(11) NOT NULL,
   `provideId` int(11) NOT NULL,
   `userStatus` int(11) NOT NULL DEFAULT 2,
   `user_userId` int(11) NOT NULL,
@@ -122,14 +113,7 @@ CREATE TABLE `joinactivity`  (
   INDEX `fk_joinActivity_activity1_idx`(`activity_activityId`) USING BTREE,
   CONSTRAINT `fk_joinActivity_activity1` FOREIGN KEY (`activity_activityId`) REFERENCES `activity` (`activityid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_joinActivity_user1` FOREIGN KEY (`user_userId`) REFERENCES `user` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of joinactivity
--- ----------------------------
-INSERT INTO `joinactivity` VALUES (1, 456, 2, 832, 1);
-INSERT INTO `joinactivity` VALUES (2, 866, 2, 866, 2);
-INSERT INTO `joinactivity` VALUES (3, 844, 2, 844, 3);
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for manage
@@ -170,23 +154,28 @@ INSERT INTO `public` VALUES (2, '苏州百年面馆打折', '百年老店装修�
 DROP TABLE IF EXISTS `route`;
 CREATE TABLE `route`  (
   `routeId` int(11) NOT NULL,
-  `fromArea` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `TimeArrange` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `ScenicLevel` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `routeName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `routeIntroduction` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `Days` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `hotRoute` int(11) NOT NULL,
-  `routeImage` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `routeImage` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`routeId`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of route
 -- ----------------------------
-INSERT INTO `route` VALUES (250, '虎丘', '2h', '2', 2, '1');
-INSERT INTO `route` VALUES (251, '寒山寺', '3h', '1', 1, '2');
-INSERT INTO `route` VALUES (252, '金鸡湖', '2', '3', 2, '4');
-INSERT INTO `route` VALUES (253, '独墅湖', '1h', '2', 3, '5');
-INSERT INTO `route` VALUES (254, '留园', '2h', '1', 1, '3');
-INSERT INTO `route` VALUES (255, '拙政园', '1h', '1', 1, '6');
+INSERT INTO `route` VALUES (250, '姑苏游园，经典园林1日游', '苏州以园林而出名，不大的地方有拙政园、留园、狮子林等，各有各的特色，而且距离上海也不远，一天就可以来回，选个空闲的时间去苏州的园林逛逛吧。1天', '1', 2, 'https://dimg06.c-ctrip.com/images/fd/tg/g4/M01/4A/BF/CggYHVXjzyeAOeymABuBTaHIgFc792_D_180_180.jpg');
+INSERT INTO `route` VALUES (251, '漫游苏州，经典1日游', '如果你没有太长的时间在苏州停留，这份攻略能让你在一天之内，领略苏州最经典的园林和景点', '1', 1, 'https://dimg07.c-ctrip.com/images/100o0b0000005q7yd532D_D_180_180.jpg');
+INSERT INTO `route` VALUES (252, '沙家浜、服装城1日游', '沙家浜既有红色革命背景又有优美的自然风光，是常熟著名的旅游景点。坐着游船穿梭于沙家浜的芦苇荡中，欣赏湿地美景，追忆当年红军在芦苇荡中躲避敌军的情景。而常熟服装城购物旅游区则有5000多个品牌的服装服饰等你挑选。一天的行程，带你到沙家浜体验阿庆嫂的革命生涯，到服装城尽情购物。', '1', 2, 'https://dimg10.c-ctrip.com/images/tg/229/433/646/17e363d5938a4892b613ebd03c120b9e_D_180_180.jpg');
+INSERT INTO `route` VALUES (253, '历史遗迹、人文故居1日游', '游览常熟别致的江南园林，看地标之一方塔园中的方塔，参观名人故居，在展览馆、博物馆了解常熟深厚的历史底蕴，这条路线带你领略常熟人文魅力。景点与景点间的距离基本在1.5公里以内，但因为常熟的这些景点下午关门比较早，游览的节奏还需紧凑一些。', '1', 3, 'https://dimg11.c-ctrip.com/images/tg/205/611/558/cebf4164ebe5483d9eecbfe060ef140e_D_180_180.jpg');
+INSERT INTO `route` VALUES (254, '周庄自驾1日游', '逛周庄不需要刻意按路线走，随便地一边走一边逛最是惬意的了，周庄内的主要景点由东向西依次是张厅、沈厅，过富安桥或者是双桥后是澄虚道院，之后就到了迷楼。附近还有沈万三故居、沈万三水冢、牌楼塔影、文化街、怪楼等等。途中饿了可以吃一些当地小吃，比如万三蹄、万三糕和全福贡酥等等。当然你也可以选择在周庄住上一晚，笃笃悠悠地看。', '1', 1, 'https://dimg06.c-ctrip.com/images/10040q000000glvpn857A_D_180_180.jpg');
+INSERT INTO `route` VALUES (255, '闲庭信步在苏州，经典2日游', '古色古香的园林，平江路、观前街、山塘街一条条老街，漫步苏州，或看水乡居民日常起居，或品尝美食，或扎入琳琅满目的小店带来的繁华中，各有各的不同，各有各的好。', '2', 1, 'https://dimg06.c-ctrip.com/images/fd/tg/g4/M01/4A/BF/CggYHVXjzyeAOeymABuBTaHIgFc792_D_180_180.jpg');
+INSERT INTO `route` VALUES (256, '登高访古，悠闲2日游', '苏州以人文景点为主，可是看多了难免会腻味，其实苏州也不乏自然景观，本行程有园林、有古寺、有古镇、有山，园林不去总是挤满人的拙政园而去定园，天平山上的乱石头能带来攀爬的乐趣，时间安排上宽松，游览的景点不单调。', '2', 1, 'https://dimg04.c-ctrip.com/images/tg/212/267/706/838380c6ad484855b8351543d302cac0_D_180_180.jpg');
+INSERT INTO `route` VALUES (257, '逛园看塔，苏州休闲2日游', '苏州品味园林之美以及街道的历史文化底蕴~', '2', 1, 'https://dimg03.c-ctrip.com/images/fd/tg/g1/M03/7A/6A/CghzfVWws-yAcClPAAsjzh_k3OE586_D_180_180.jpg');
+INSERT INTO `route` VALUES (258, '自驾太湖东、西山2日游', '东、西山位于太湖边，是周末度假出游的好地方。东山以名胜古迹居多，如雕花楼、启园，古紫金庵，三山古文化遗址。西山与东山隔湖相望，以自然风光为主，西山国家森林公园内的缥缈峰为太湖七十二峰之首，二天的时间可以都游览到，晚上还能吃一顿当地的农家菜。', '2', 1, 'https://dimg12.c-ctrip.com/images/100m0c0000006426p4317_D_180_180.jpg');
+INSERT INTO `route` VALUES (259, '游虞山尚湖，经典2日游', '两天的时间，带你爬虞山游尚湖，玩得会比较细和全面，绝不走马观花。游览这两个常熟市内具有代表性的景点及周边，是常熟旅游的经典路线，适合绝大多数的游客。', '2', 1, 'https://dimg05.c-ctrip.com/images/fd/tg/g4/M02/39/53/CggYHlXKpxCAWwSqACXa-c7n1qo838_D_180_180.jpg');
+INSERT INTO `route` VALUES (260, '游遍苏州，经典景点3日游', '苏州古韵的继承，拙政园、狮子林、山塘街~', '3', 1, 'https://dimg07.c-ctrip.com/images/100c0k000000c5n1q4F97_D_180_180.jpg');
 
 -- ----------------------------
 -- Table structure for routedetails
@@ -205,7 +194,22 @@ CREATE TABLE `routedetails`  (
   PRIMARY KEY (`routeDetailsId`) USING BTREE,
   INDEX `fk_routeDetails_route1_idx`(`route_routeId`) USING BTREE,
   CONSTRAINT `fk_routeDetails_route1` FOREIGN KEY (`route_routeId`) REFERENCES `route` (`routeid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of routedetails
+-- ----------------------------
+INSERT INTO `routedetails` VALUES (1, '姑苏游园，经典园林1日游', '1', '8个', NULL, '苏州', '2小时', '全年', 250);
+INSERT INTO `routedetails` VALUES (2, '漫游苏州，经典1日游', '1', '5个', NULL, '苏州', '2-3小时', '2-5月', 251);
+INSERT INTO `routedetails` VALUES (3, '沙家浜、服装城1日游', '1', '6个', NULL, '常熟', '2-3小时', '8-12月', 252);
+INSERT INTO `routedetails` VALUES (4, '历史遗迹、人文故居1日游', '1', '7个', NULL, '常熟', '2小时', '8-12月', 253);
+INSERT INTO `routedetails` VALUES (5, '周庄自驾1日游', '1', '10个', NULL, '周庄', '3小时', '1-5月', 254);
+INSERT INTO `routedetails` VALUES (6, '闲庭信步在苏州，经典2日游', '2', '11个', NULL, '苏州', '4小时', '全年', 255);
+INSERT INTO `routedetails` VALUES (7, '登高访古，悠闲2日游', '2', '5个', NULL, '苏州', '4-5小时', '8-12月', 256);
+INSERT INTO `routedetails` VALUES (8, '逛园看塔，苏州休闲2日游', '2', '6个', NULL, '苏州', '5-6小时', '7-10月', 257);
+INSERT INTO `routedetails` VALUES (9, '自驾太湖东、西山2日游', '2', '4个', NULL, '苏州', '2-3小时', '全年', 258);
+INSERT INTO `routedetails` VALUES (10, '游虞山尚湖，经典2日游', '2', '10个', NULL, '常熟', '3-4小时', '1-6月', 259);
+INSERT INTO `routedetails` VALUES (11, '游遍苏州，经典景点3日游', '3', '6个', NULL, '数组', '7-8小时', '全年', 260);
 
 -- ----------------------------
 -- Table structure for scenic
@@ -213,27 +217,78 @@ CREATE TABLE `routedetails`  (
 DROP TABLE IF EXISTS `scenic`;
 CREATE TABLE `scenic`  (
   `scenicId` int(11) NOT NULL AUTO_INCREMENT,
-  `scenicName` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `scenicName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `fromArea` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `timeArrange` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `scenicLevel` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `hotScenic` int(11) NOT NULL,
-  `scenicAddress` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `openHours` date NULL DEFAULT NULL,
-  `scenicImage` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `scenicAddress` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `openHours` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `scenicImage` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `scenicIntroduce` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `scenicLocation_scenicLocationId` int(11) NOT NULL,
   PRIMARY KEY (`scenicId`) USING BTREE,
   INDEX `fk_scenic_scenicLocation1_idx`(`scenicLocation_scenicLocationId`) USING BTREE,
+  INDEX `scenicId`(`scenicId`) USING BTREE,
+  INDEX `scenicId_2`(`scenicId`) USING BTREE,
+  INDEX `scenicId_3`(`scenicId`) USING BTREE,
+  INDEX `scenicId_4`(`scenicId`) USING BTREE,
+  INDEX `scenicId_5`(`scenicId`) USING BTREE,
   CONSTRAINT `fk_scenic_scenicLocation1` FOREIGN KEY (`scenicLocation_scenicLocationId`) REFERENCES `sceniclocation` (`sceniclocationid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 353 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 399 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of scenic
 -- ----------------------------
-INSERT INTO `scenic` VALUES (350, '虎丘', '虎丘', '2', '2', 1, '苏州古城西北角', '2010-00-00', '1', '有“吴中第一名胜”、“吴中第一山”的美誉', 1);
-INSERT INTO `scenic` VALUES (351, '金鸡湖', '金鸡湖', '2', '3', 1, '苏州吴中区', '2009-00-00', '2', '好玩啊', 2);
-INSERT INTO `scenic` VALUES (352, '留园', '留园', '1', '1', 1, '市中心', '2008-00-00', '1', '真不错啊', 3);
+INSERT INTO `scenic` VALUES (350, '苏州市天平山风景名胜区', '', '', '4A景区', 1, '江苏省苏州市吴中区灵天路 ', '7:30-17:00', 'https://pic5.40017.cn/01/000/08/f6/rBLkBlsffHqAYTNRAAMQePZ57xw462_540x304_00.jpg', '', 1);
+INSERT INTO `scenic` VALUES (351, '穹窿山(苏州太湖旅游区)', '', '', '4A景区', 1, '江苏省苏州市吴中区穹窿山风景区苏州绕城高速光福路出口下1公里', '8:30-16:30，入园时间截止16:00。', 'https://pic4.40017.cn/scenery/destination/2016/07/13/14/7mtN1h.jpg.webp', '', 1);
+INSERT INTO `scenic` VALUES (352, '甪直古镇', '', '', '4A景区', 1, '江苏省苏州城东南25公里', '8:00-17:00（游船时间：8:30-16:00）', 'https://pic4.40017.cn/scenery/destination/2016/10/21/17/ZeMyeT.jpg.webp', '', 1);
+INSERT INTO `scenic` VALUES (353, '苏州太湖湖滨国家湿地公园', NULL, NULL, '5A景区', 1, '江苏省苏州市吴中区胥香路和环太湖大道交汇处苏州太湖湖滨国家湿地公园', '8:30-17:00；游船营业时间：9:00-15:30', 'https://pic4.40017.cn/scenery/destination/2016/11/01/16/Mls3GH.jpg.webp', NULL, 1);
+INSERT INTO `scenic` VALUES (354, '东山雕花楼', NULL, NULL, '5A景区', 1, '江苏省苏州市吴中区东山镇紫金路58号', '8:30-17:00', 'https://pic4.40017.cn/scenery/destination/2016/11/03/15/9rW71H.jpg.webp', NULL, 1);
+INSERT INTO `scenic` VALUES (355, '苏州上方山国家森林公园', NULL, NULL, '4A景区', 1, '江苏省苏州市高新区横塘镇吴越路行春桥堍', '07:00-16:30', 'https://pic4.40017.cn/scenery/destination/2016/07/23/21/MpkImG.jpg.webp', NULL, 1);
+INSERT INTO `scenic` VALUES (356, '重元寺', NULL, NULL, NULL, 1, '江苏省苏州工业园区唯亭阳澄湖半岛慈云路333号', '07:30-17:00', 'https://pic4.40017.cn/scenery/destination/2016/07/21/16/uc3rY0.jpg.webp', NULL, 2);
+INSERT INTO `scenic` VALUES (357, '华谊兄弟电影世界', NULL, NULL, NULL, 1, '江苏省苏州市工业园区阳澄湖半岛度假区 ', '09:30~17:30', 'http://pic5.40017.cn/02/001/f8/c0/rBLkCVvAE9WAbLxdAAJo_OarUX8615.jpg', NULL, 2);
+INSERT INTO `scenic` VALUES (358, '苏州半岛薰衣草庄园', NULL, NULL, NULL, 1, '江苏省苏州市工业园区阳澄环路999号', '09:00-16:30', 'https://pic5.40017.cn/01/000/fa/40/rBANC1vAcAeAQj53AAG1cU6-vI4742.jpg', NULL, 2);
+INSERT INTO `scenic` VALUES (359, '苏州阳澄湖半岛旅游度假区', NULL, NULL, NULL, 1, ' 江苏省苏州工业园区阳澄湖环路999号阳澄湖半岛星华街游客中心 ', '9:00-17:00', 'https://pic5.40017.cn/02/001/df/04/rBLkCVr7r02AcNPzAAHYg2jgdwg076.jpg', NULL, 2);
+INSERT INTO `scenic` VALUES (360, '苏州麦鲁小城', NULL, NULL, NULL, 1, '江苏省苏州工业园区圆融时代广场生活休闲区E棟圆融童乐园301室', '10:00-14:00', 'https://pic5.40017.cn/02/000/8f/18/rBANDFlCODCAeeNwAAQAAHMiFq4457.jpg', NULL, 2);
+INSERT INTO `scenic` VALUES (361, '金鸡湖夜游', NULL, NULL, NULL, 1, '江苏省苏州市工业园区金鸡湖月光码头或湖西望湖阁码头', '19:30（周一至周五）和19:00（周六至周日）', 'https://pic5.40017.cn/02/000/86/ab/rBLkCFtn_deAScPpAAFkwFtgVWk282_540x304_00.jpg', NULL, 2);
+INSERT INTO `scenic` VALUES (362, '白马涧 ', NULL, NULL, '4A景区', 1, '江苏省苏州新区枫桥街道白马涧生态园龙池风景区', '9:00-17:00', 'https://pic4.40017.cn/scenery/destination/2016/07/12/10/oJTgWM.jpg.webp', NULL, 3);
+INSERT INTO `scenic` VALUES (363, '江苏大阳山国家森林公园文殊寺景区', NULL, NULL, '4A景区', 1, '江苏省苏州市新区浒墅关经济开发区阳山环路8号', '09:00-16:30（15:30截止换票入园）', 'https://pic4.40017.cn/scenery/destination/2016/07/20/16/K13QwY.jpg.webp', NULL, 3);
+INSERT INTO `scenic` VALUES (364, '苏州太湖国家湿地公园', NULL, NULL, '4A景区', 1, '江苏省苏州高新区镇湖绣品街1号', '9:00-16:30', 'https://pic5.40017.cn/01/001/51/1d/rBLkBVtEL9WAdCAzAAJNRuHB9yM811.jpg', NULL, 3);
+INSERT INTO `scenic` VALUES (365, '大阳山国家森林公园植物园景区', NULL, NULL, '4A景区', 1, '江苏省苏州市高新区浒墅关开发区南阳山路', '9:00-16:30（15:30截止换票入园）', 'https://pic5.40017.cn/01/000/80/13/rBANC1q8o0uAfKPcAALZ63DSlyA854.jpg', NULL, 3);
+INSERT INTO `scenic` VALUES (366, '阳山温泉度假山庄', NULL, NULL, NULL, 1, '江苏省苏州浒墅关经济开发区阳山环路999号（石阳路往北到底）', '13:00-22:00', 'https://pic5.40017.cn/01/001/0e/c7/rBLkBlujaZ6AD_8RAAL7xm6tU6c931.jpg', NULL, 3);
+INSERT INTO `scenic` VALUES (367, '白鹤寺', NULL, NULL, NULL, 1, '江苏苏州市虎丘区枫桥街道马涧路高景山 ', ' 8:00-16:00\r\n\r\n8:00-16:00', 'https://pic5.40017.cn/02/000/a5/9d/rBANDFt75z-AdnKwAATzn0dVNJ8918_800x475_00.jpg', NULL, 3);
+INSERT INTO `scenic` VALUES (368, '周庄', NULL, NULL, '5A景区', 1, '江苏省苏州市昆山周庄全福路43号', '7:30-19:50', 'http://pic5.40017.cn/01/001/67/7b/rBANC1usUkKAIKEOAAIS8rNPtX4402.jpg', NULL, 4);
+INSERT INTO `scenic` VALUES (369, '千灯古镇', NULL, NULL, '4A景区', 1, '江苏省昆山市千灯古镇尚书路1号 ', '8:30-16:30', 'https://pic5.40017.cn/02/001/73/dc/rBLkCFqz0MOAAzDUAAMQ2NckJSQ928.jpg', NULL, 4);
+INSERT INTO `scenic` VALUES (370, '锦溪 ', NULL, NULL, '4A景区', 1, '江苏省昆山市锦溪镇', '8:00-17:00', 'https://pic4.40017.cn/scenery/destination/2016/10/31/17/5HL5ES.jpg.webp', NULL, 4);
+INSERT INTO `scenic` VALUES (371, '阳澄湖水上公园游乐场', NULL, NULL, NULL, 1, '江苏省昆山市巴城镇阳澄湖旅游度假区北门游乐场售票处', '9:00-17:00', 'https://pic5.40017.cn/01/001/b8/0f/rBLkBVrhOEGAFysuAAGHsWkdmDQ107.jpg', NULL, 4);
+INSERT INTO `scenic` VALUES (372, '周庄绿乐园', NULL, NULL, NULL, 1, '江苏省苏州市昆山市全旺路88号绿乐园', '8:00-17:30（暑期延长到19:00）\r\n', 'https://pic5.40017.cn/01/000/53/bd/rBLkBVtFyZiAJHsWAAE-zvWWv4I780.jpg', NULL, 4);
+INSERT INTO `scenic` VALUES (373, '周庄生命奥秘博物馆', NULL, NULL, NULL, 1, '江苏省苏州昆山市周庄镇大桥路82号', '9:00-17:00', 'https://pic4.40017.cn/scenery/destination/2016/10/24/10/Ko8yg9.jpg.webp', NULL, 4);
+INSERT INTO `scenic` VALUES (374, '莲花岛景区', NULL, NULL, NULL, 1, '江苏省苏州市阳澄湖旅游集散中心 ', '9:00-16:30', 'https://pic4.40017.cn/scenery/destination/2017/03/14/13/s3PdH0.jpg.webp', NULL, 5);
+INSERT INTO `scenic` VALUES (375, '荷塘月色湿地公园', NULL, NULL, NULL, 1, '江苏省苏州市相城区太阳路西4575号（与广济北路交汇口西）', '8:30-16:30', 'https://pic5.40017.cn/02/001/86/94/rBLkCFtn7sWAdtjoAALA6E8IXMU299.jpg', NULL, 5);
+INSERT INTO `scenic` VALUES (376, '苏州中国花卉植物园', NULL, NULL, NULL, 1, '江苏省苏州市相城区太阳路', '8:30-16:30', 'https://pic4.40017.cn/scenery/destination/2016/12/31/15/jQg2i5.jpg.webp', NULL, 5);
+INSERT INTO `scenic` VALUES (377, '盛泽湖月季园', NULL, NULL, NULL, 1, '江苏省苏州相城区盛泽湖休闲度假区', '8:30–17:00', 'https://pic5.40017.cn/02/000/4d/11/rBLkCFqh7pyAHAaKAAJJdjPLgeA554.jpg', NULL, 5);
+INSERT INTO `scenic` VALUES (378, '张家港市暨阳湖欢乐世界', NULL, NULL, NULL, 1, '江苏省张家港市杨舍镇暨阳湖生态园区', '09:00 - 17:00', 'https://pic4.40017.cn/scenery/destination/2016/10/13/14/7eVRxJ.jpg.webp', NULL, 6);
+INSERT INTO `scenic` VALUES (379, '香山景区', NULL, NULL, '4A景区', 1, '江苏省苏州市张家港市南沙镇望江路', '04：30—21：30', 'https://pic4.40017.cn/scenery/destination/2016/10/27/15/t9ZV7P.jpg.webp', NULL, 6);
+INSERT INTO `scenic` VALUES (380, '河阳山歌馆', NULL, NULL, NULL, 1, ' 江苏省张家港市凤凰镇河阳山歌馆', '8:30- 16:30', 'https://pic4.40017.cn/scenery/destination/2016/10/25/10/md9SxT.jpg.webp', NULL, 6);
+INSERT INTO `scenic` VALUES (381, '恬庄古街', NULL, NULL, NULL, 1, ' 江苏省张家港市凤凰镇恬庄古街 ', '8:30-16:30', 'https://pic4.40017.cn/scenery/destination/2016/10/19/11/f8q5xm.jpg.webp', NULL, 6);
+INSERT INTO `scenic` VALUES (382, '金凤凰温泉度假村', NULL, NULL, NULL, 1, '江苏省苏州张家港市凤凰镇金谷路 ', '13:00-22:00', 'https://pic3.40017.cn/scenery/destination/2015/04/18/13/8OjzTk.jpg.webp', NULL, 6);
+INSERT INTO `scenic` VALUES (383, '张家港梦幻海洋王国', NULL, NULL, NULL, 1, '江苏省苏州市张家港市吾悦广场负一层', '10:00-20:00', 'https://pic4.40017.cn/scenery/destination/2016/10/19/15/foeOri.jpg.webp', NULL, 6);
+INSERT INTO `scenic` VALUES (384, '太仓郑和公园', NULL, NULL, NULL, 1, '江苏省太仓市太仓港经济技术开发区南环路1号太仓郑和公园', '8:30-16:30', 'https://pic5.40017.cn/01/001/7b/88/rBANC1thaiuAWDegAAJ5RYwtxR0571.jpg', NULL, 7);
+INSERT INTO `scenic` VALUES (385, '太仓现代农业园', NULL, NULL, NULL, 1, '江苏省苏州市太仓市沙溪镇岳王区新港公路南侧', '8:45-17:15', 'https://pic3.40017.cn/scenery/destination/2015/06/08/14/DWnCrf.jpg.webp', NULL, 7);
+INSERT INTO `scenic` VALUES (386, '沙溪古镇', NULL, NULL, NULL, 1, ' 江苏省苏州市太仓市沙溪古镇白云路', '8:30-17:00', 'https://pic4.40017.cn/scenery/destination/2016/07/20/16/s6gqrI.jpg.webp', NULL, 7);
+INSERT INTO `scenic` VALUES (387, '沙家浜 ', NULL, NULL, '5A景区', 1, '江苏省苏州市常熟市沙家浜镇锡太公路', '8:00-16:15', 'https://pic5.40017.cn/01/001/4f/18/rBLkBVtDLNSAODcjAALEMc0qhfg202.jpg', NULL, 8);
+INSERT INTO `scenic` VALUES (388, '梅李聚沙园', NULL, NULL, '4A景区', 1, '江苏省常熟市梅李镇梅东路1号 ', '8:00-16:00', 'https://pic3.40017.cn/scenery/destination/2015/04/18/04/OAC6Z1.jpg.webp', NULL, 8);
+INSERT INTO `scenic` VALUES (389, '常熟虞山风景区 ', NULL, NULL, '5A景区', 1, '江苏省苏州市常熟市虞山南路宝岩生态园东门', '8:00-16:00', 'https://pic4.40017.cn/scenery/destination/2016/10/25/16/qIq4r6.jpg.webp', NULL, 8);
+INSERT INTO `scenic` VALUES (390, '尚湖风景区 ', NULL, NULL, '5A景区', 1, '江苏省苏州市常熟市虞山镇外西三环路尚湖景区 ', '8:10-16:10', 'https://pic4.40017.cn/scenery/destination/2016/07/23/19/JECinC.jpg.webp', NULL, 8);
+INSERT INTO `scenic` VALUES (391, '蒋巷村', NULL, NULL, '4A景区', 1, '江苏省苏州市常熟市支塘镇蒋巷村', '8:00 - 16:00', 'https://pic3.40017.cn/scenery/destination/2015/04/18/15/2BL8oQ.jpg.webp', NULL, 8);
+INSERT INTO `scenic` VALUES (392, '方塔园', NULL, NULL, NULL, 1, ' 江苏省苏州市常熟市环城东路靠近新颜桥', '8:00-16:00', 'https://pic4.40017.cn/scenery/destination/2016/10/26/09/JB3qiU.jpg.webp', NULL, 8);
+INSERT INTO `scenic` VALUES (393, '拙政园', NULL, NULL, '5A景区', 1, '江苏省苏州市平江区东北街178号', '7:30-17:30', 'http://pic5.40017.cn/01/001/79/16/rBANC1tgOvSAHfmjAAJkmUOiXAg451.jpg', NULL, 9);
+INSERT INTO `scenic` VALUES (394, '苏州狮子林', NULL, NULL, '4A景区', 1, '江苏省苏州市园林路23号 ', '7:30-17:30', 'https://pic4.40017.cn/scenery/destination/2016/10/25/14/aKaDVZ.jpg.webp', NULL, 9);
+INSERT INTO `scenic` VALUES (395, '网师园', NULL, NULL, '4A景区', 1, '江苏省苏州市银杏桥北阔街头巷11号', '7:00-17:30', 'https://pic5.40017.cn/02/001/aa/37/rBLkCVnLSXKAMkVXAAKbcZlh5oE132.jpg', NULL, 9);
+INSERT INTO `scenic` VALUES (396, '平江路怪楼', NULL, NULL, NULL, 1, '江苏省苏州市姑苏区平江路236号', '11:00-20:00', 'https://pic5.40017.cn/02/000/e3/43/rBLkCVubWG6AQdXyAAGPcrAeGaI897.jpg', NULL, 9);
+INSERT INTO `scenic` VALUES (397, '苏州5D星空错觉艺术馆', NULL, NULL, NULL, 1, '江苏省苏州市姑苏区观前路步行街久泰商厦4楼（大成坊旁）', ' 09:00-22:00', 'https://pic5.40017.cn/02/001/b3/47/rBLkCFuDt2CADvWMAAIc2DiAyBI459_800x475_00.jpg', NULL, 9);
+INSERT INTO `scenic` VALUES (398, '山塘街昆曲博物馆', NULL, NULL, NULL, 1, '江苏省苏州市姑苏区山塘街通贵桥下塘45号', '19:30-20:30', 'https://pic5.40017.cn/02/001/57/cf/rBLkCFoAJ_uAcRvLAAI-uCGU15Y045.jpg', NULL, 9);
 
 -- ----------------------------
 -- Table structure for scenicimage
@@ -250,7 +305,7 @@ CREATE TABLE `scenicimage`  (
   PRIMARY KEY (`scenicImageId`) USING BTREE,
   INDEX `fk_scenicImage_scenicIntroduce1_idx`(`scenicIntroduceID`) USING BTREE,
   CONSTRAINT `fk_scenicImage_scenicIntroduce1` FOREIGN KEY (`scenicIntroduceID`) REFERENCES `scenicintroduce` (`scenicintroduceid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for scenicintroduce
@@ -261,11 +316,69 @@ CREATE TABLE `scenicintroduce`  (
   `scenicTitle` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `scenicImage` int(11) NULL DEFAULT NULL,
   `scenicParagraph` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `scenicName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `scenicLevel` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `scenicAddress` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `openHours` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `scenic_scenicId` int(11) NOT NULL,
   PRIMARY KEY (`scenicIntroduceID`) USING BTREE,
   INDEX `fk_scenicIntroduce_scenic1_idx`(`scenic_scenicId`) USING BTREE,
   CONSTRAINT `fk_scenicIntroduce_scenic1` FOREIGN KEY (`scenic_scenicId`) REFERENCES `scenic` (`scenicid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 53 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of scenicintroduce
+-- ----------------------------
+INSERT INTO `scenicintroduce` VALUES (3, NULL, NULL, NULL, '苏州市天平山风景名胜区', '4A景区', '江苏省苏州市吴中区灵天路 ', '7:30-17:00', 350);
+INSERT INTO `scenicintroduce` VALUES (4, NULL, NULL, NULL, '穹窿山(苏州太湖旅游区)', '4A景区', '江苏省苏州市吴中区穹窿山风景区苏州绕城高速光福路出口下1公里', '8:30-16:30，入园时间截止16:00。', 351);
+INSERT INTO `scenicintroduce` VALUES (5, NULL, NULL, NULL, '甪直古镇', '4A景区', '江苏省苏州城东南25公里', '8:00-17:00（游船时间：8:30-16:00）', 352);
+INSERT INTO `scenicintroduce` VALUES (6, NULL, NULL, NULL, '苏州太湖湖滨国家湿地公园', '5A景区', '江苏省苏州市吴中区胥香路和环太湖大道交汇处苏州太湖湖滨国家湿地公园', '8:30-17:00；游船营业时间：9:00-15:30', 353);
+INSERT INTO `scenicintroduce` VALUES (7, NULL, NULL, NULL, '东山雕花楼', '5A景区', '江苏省苏州市吴中区东山镇紫金路58号', '8:30-17:00', 354);
+INSERT INTO `scenicintroduce` VALUES (8, NULL, NULL, NULL, '苏州上方山国家森林公园', '4A景区', '江苏省苏州市高新区横塘镇吴越路行春桥堍', '07:00-16:30', 355);
+INSERT INTO `scenicintroduce` VALUES (9, NULL, NULL, NULL, '重元寺', NULL, '江苏省苏州工业园区唯亭阳澄湖半岛慈云路333号', '07:30-17:00', 356);
+INSERT INTO `scenicintroduce` VALUES (10, NULL, NULL, NULL, '华谊兄弟电影世界', NULL, '江苏省苏州市工业园区阳澄湖半岛度假区 ', '09:30~17:30', 357);
+INSERT INTO `scenicintroduce` VALUES (11, NULL, NULL, NULL, '苏州半岛薰衣草庄园', NULL, '江苏省苏州市工业园区阳澄环路999号', '09:00-16:30', 358);
+INSERT INTO `scenicintroduce` VALUES (12, NULL, NULL, NULL, '苏州阳澄湖半岛旅游度假区', NULL, ' 江苏省苏州工业园区阳澄湖环路999号阳澄湖半岛星华街游客中心 ', '9:00-17:00', 359);
+INSERT INTO `scenicintroduce` VALUES (13, NULL, NULL, NULL, '苏州麦鲁小城', NULL, '江苏省苏州工业园区圆融时代广场生活休闲区E棟圆融童乐园301室', '10:00-14:00', 360);
+INSERT INTO `scenicintroduce` VALUES (14, NULL, NULL, NULL, '金鸡湖夜游', NULL, '江苏省苏州市工业园区金鸡湖月光码头或湖西望湖阁码头', '19:30（周一至周五）和19:00（周六至周日）', 361);
+INSERT INTO `scenicintroduce` VALUES (15, NULL, NULL, NULL, '白马涧 ', '4A景区', '江苏省苏州新区枫桥街道白马涧生态园龙池风景区', '9:00-17:00', 362);
+INSERT INTO `scenicintroduce` VALUES (16, NULL, NULL, NULL, '江苏大阳山国家森林公园文殊寺景区', '4A景区', '江苏省苏州市新区浒墅关经济开发区阳山环路8号', '09:00-16:30（15:30截止换票入园）', 363);
+INSERT INTO `scenicintroduce` VALUES (17, NULL, NULL, NULL, '苏州太湖国家湿地公园', '4A景区', '江苏省苏州高新区镇湖绣品街1号', '9:00-16:30', 364);
+INSERT INTO `scenicintroduce` VALUES (18, NULL, NULL, NULL, '大阳山国家森林公园植物园景区', '4A景区', '江苏省苏州市高新区浒墅关开发区南阳山路', '9:00-16:30（15:30截止换票入园）', 365);
+INSERT INTO `scenicintroduce` VALUES (19, NULL, NULL, NULL, '阳山温泉度假山庄', NULL, '江苏省苏州浒墅关经济开发区阳山环路999号（石阳路往北到底）', '13:00-22:00', 366);
+INSERT INTO `scenicintroduce` VALUES (20, NULL, NULL, NULL, '白鹤寺', NULL, '江苏苏州市虎丘区枫桥街道马涧路高景山 ', ' 8:00-16:00\r\n\r\n8:00-16:00', 367);
+INSERT INTO `scenicintroduce` VALUES (21, NULL, NULL, NULL, '周庄', '5A景区', '江苏省苏州市昆山周庄全福路43号', '7:30-19:50', 368);
+INSERT INTO `scenicintroduce` VALUES (22, NULL, NULL, NULL, '千灯古镇', '4A景区', '江苏省昆山市千灯古镇尚书路1号 ', '8:30-16:30', 369);
+INSERT INTO `scenicintroduce` VALUES (23, NULL, NULL, NULL, '锦溪 ', '4A景区', '江苏省昆山市锦溪镇', '8:00-17:00', 370);
+INSERT INTO `scenicintroduce` VALUES (24, NULL, NULL, NULL, '阳澄湖水上公园游乐场', NULL, '江苏省昆山市巴城镇阳澄湖旅游度假区北门游乐场售票处', '9:00-17:00', 371);
+INSERT INTO `scenicintroduce` VALUES (25, NULL, NULL, NULL, '周庄绿乐园', NULL, '江苏省苏州市昆山市全旺路88号绿乐园', '8:00-17:30（暑期延长到19:00）\r\n', 372);
+INSERT INTO `scenicintroduce` VALUES (26, NULL, NULL, NULL, '周庄生命奥秘博物馆', NULL, '江苏省苏州昆山市周庄镇大桥路82号', '9:00-17:00', 373);
+INSERT INTO `scenicintroduce` VALUES (27, NULL, NULL, NULL, '莲花岛景区', NULL, '江苏省苏州市阳澄湖旅游集散中心 ', '9:00-16:30', 374);
+INSERT INTO `scenicintroduce` VALUES (28, NULL, NULL, NULL, '荷塘月色湿地公园', NULL, '江苏省苏州市相城区太阳路西4575号（与广济北路交汇口西）', '8:30-16:30', 375);
+INSERT INTO `scenicintroduce` VALUES (29, NULL, NULL, NULL, '苏州中国花卉植物园', NULL, '江苏省苏州市相城区太阳路', '8:30-16:30', 376);
+INSERT INTO `scenicintroduce` VALUES (30, NULL, NULL, NULL, '盛泽湖月季园', NULL, '江苏省苏州相城区盛泽湖休闲度假区', '8:30–17:00', 377);
+INSERT INTO `scenicintroduce` VALUES (31, NULL, NULL, NULL, '张家港市暨阳湖欢乐世界', NULL, '江苏省张家港市杨舍镇暨阳湖生态园区', '09:00 - 17:00', 378);
+INSERT INTO `scenicintroduce` VALUES (32, NULL, NULL, NULL, '香山景区', '4A景区', '江苏省苏州市张家港市南沙镇望江路', '04：30—21：30', 379);
+INSERT INTO `scenicintroduce` VALUES (33, NULL, NULL, NULL, '河阳山歌馆', NULL, ' 江苏省张家港市凤凰镇河阳山歌馆', '8:30- 16:30', 380);
+INSERT INTO `scenicintroduce` VALUES (34, NULL, NULL, NULL, '恬庄古街', NULL, ' 江苏省张家港市凤凰镇恬庄古街 ', '8:30-16:30', 381);
+INSERT INTO `scenicintroduce` VALUES (35, NULL, NULL, NULL, '金凤凰温泉度假村', NULL, '江苏省苏州张家港市凤凰镇金谷路 ', '13:00-22:00', 382);
+INSERT INTO `scenicintroduce` VALUES (36, NULL, NULL, NULL, '张家港梦幻海洋王国', NULL, '江苏省苏州市张家港市吾悦广场负一层', '10:00-20:00', 383);
+INSERT INTO `scenicintroduce` VALUES (37, NULL, NULL, NULL, '太仓郑和公园', NULL, '江苏省太仓市太仓港经济技术开发区南环路1号太仓郑和公园', '8:30-16:30', 384);
+INSERT INTO `scenicintroduce` VALUES (38, NULL, NULL, NULL, '太仓现代农业园', NULL, '江苏省苏州市太仓市沙溪镇岳王区新港公路南侧', '8:45-17:15', 385);
+INSERT INTO `scenicintroduce` VALUES (39, NULL, NULL, NULL, '沙溪古镇', NULL, ' 江苏省苏州市太仓市沙溪古镇白云路', '8:30-17:00', 386);
+INSERT INTO `scenicintroduce` VALUES (40, NULL, NULL, NULL, '沙家浜 ', '5A景区', '江苏省苏州市常熟市沙家浜镇锡太公路', '8:00-16:15', 387);
+INSERT INTO `scenicintroduce` VALUES (41, NULL, NULL, NULL, '梅李聚沙园', '4A景区', '江苏省常熟市梅李镇梅东路1号 ', '8:00-16:00', 388);
+INSERT INTO `scenicintroduce` VALUES (42, NULL, NULL, NULL, '常熟虞山风景区 ', '5A景区', '江苏省苏州市常熟市虞山南路宝岩生态园东门', '8:00-16:00', 389);
+INSERT INTO `scenicintroduce` VALUES (43, NULL, NULL, NULL, '尚湖风景区 ', '5A景区', '江苏省苏州市常熟市虞山镇外西三环路尚湖景区 ', '8:10-16:10', 390);
+INSERT INTO `scenicintroduce` VALUES (44, NULL, NULL, NULL, '蒋巷村', '4A景区', '江苏省苏州市常熟市支塘镇蒋巷村', '8:00 - 16:00', 391);
+INSERT INTO `scenicintroduce` VALUES (45, NULL, NULL, NULL, '方塔园', NULL, ' 江苏省苏州市常熟市环城东路靠近新颜桥', '8:00-16:00', 392);
+INSERT INTO `scenicintroduce` VALUES (46, NULL, NULL, NULL, '拙政园', '5A景区', '江苏省苏州市平江区东北街178号', '7:30-17:30', 393);
+INSERT INTO `scenicintroduce` VALUES (47, NULL, NULL, NULL, '苏州狮子林', '4A景区', '江苏省苏州市园林路23号 ', '7:30-17:30', 394);
+INSERT INTO `scenicintroduce` VALUES (48, NULL, NULL, NULL, '网师园', '4A景区', '江苏省苏州市银杏桥北阔街头巷11号', '7:00-17:30', 395);
+INSERT INTO `scenicintroduce` VALUES (49, NULL, NULL, NULL, '平江路怪楼', NULL, '江苏省苏州市姑苏区平江路236号', '11:00-20:00', 396);
+INSERT INTO `scenicintroduce` VALUES (50, NULL, NULL, NULL, '苏州5D星空错觉艺术馆', NULL, '江苏省苏州市姑苏区观前路步行街久泰商厦4楼（大成坊旁）', ' 09:00-22:00', 397);
+INSERT INTO `scenicintroduce` VALUES (51, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 398);
+INSERT INTO `scenicintroduce` VALUES (52, NULL, NULL, NULL, '山塘街昆曲博物馆', NULL, '江苏省苏州市姑苏区山塘街通贵桥下塘45号', '19:30-20:30', 398);
 
 -- ----------------------------
 -- Table structure for sceniclocation
@@ -273,23 +386,24 @@ CREATE TABLE `scenicintroduce`  (
 DROP TABLE IF EXISTS `sceniclocation`;
 CREATE TABLE `sceniclocation`  (
   `scenicLocationId` int(11) NOT NULL AUTO_INCREMENT,
-  `industrialPark` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `wuzhongDistrict` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `gaoXinqu` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `xiangCheng` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `kunShan` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `changShu` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `zhangJiagang` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `taiCang` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  PRIMARY KEY (`scenicLocationId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  `locationName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`scenicLocationId`) USING BTREE,
+  INDEX `scenicLocationId`(`scenicLocationId`) USING BTREE,
+  INDEX `scenicLocationId_2`(`scenicLocationId`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sceniclocation
 -- ----------------------------
-INSERT INTO `sceniclocation` VALUES (1, '1', '1', '2', '3', '4', '2', '1', '1');
-INSERT INTO `sceniclocation` VALUES (2, '3', '6', '1', '5', '1', '2', '3', '5');
-INSERT INTO `sceniclocation` VALUES (3, '2', '4', '5', '6', '4', '1', '2', '3');
+INSERT INTO `sceniclocation` VALUES (1, 'wuzhongqu');
+INSERT INTO `sceniclocation` VALUES (2, 'yuanqu');
+INSERT INTO `sceniclocation` VALUES (3, 'gaoxinqu');
+INSERT INTO `sceniclocation` VALUES (4, 'kunshan');
+INSERT INTO `sceniclocation` VALUES (5, 'xiangcheng');
+INSERT INTO `sceniclocation` VALUES (6, 'zhangjiagang');
+INSERT INTO `sceniclocation` VALUES (7, 'taicang');
+INSERT INTO `sceniclocation` VALUES (8, 'changshu');
+INSERT INTO `sceniclocation` VALUES (9, 'gusuqu');
 
 -- ----------------------------
 -- Table structure for travelnote
@@ -300,7 +414,7 @@ CREATE TABLE `travelnote`  (
   `travelTitle` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `travelNoteContent` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `travelNoteImage` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `hotNote` int(11) NULL DEFAULT NULL,
+  `hotNote` int(1) UNSIGNED NULL DEFAULT 0,
   `manageCheck` int(11) NULL DEFAULT NULL,
   `userId` int(11) NOT NULL,
   `travelNotePriseNum` int(11) NULL DEFAULT NULL,
@@ -312,25 +426,26 @@ CREATE TABLE `travelnote`  (
   INDEX `travelNoteId_4`(`travelNoteId`) USING BTREE,
   INDEX `travelNoteId_5`(`travelNoteId`) USING BTREE,
   INDEX `travelNoteId_6`(`travelNoteId`) USING BTREE,
-  INDEX `travelNoteId_7`(`travelNoteId`) USING BTREE
+  INDEX `travelNoteId_7`(`travelNoteId`) USING BTREE,
+  CONSTRAINT `fk` FOREIGN KEY (`userId`) REFERENCES `user` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of travelnote
 -- ----------------------------
-INSERT INTO `travelnote` VALUES (2, '夜逛七里山塘', '七里山塘又名七狸山塘，正式名称为山塘街，是江苏苏州金阊区一条有将近1200年历史的步行街，西起虎丘山下席场弄，东到阊门外古运河上的渡僧桥，全长3829.6米。\r\n\r\n唐宝历二年（825年），大诗人白居易从杭州调任苏州刺史，为了便利苏州水陆交通，开凿了一条西起虎丘东至阊门的山塘河，山塘河河北修建道路，称为“山塘街”，山塘河和山塘街长约七里，叫“七里山塘”。自古山塘街有“姑苏第一名街”之称。\r\n\r\n山塘街和山塘河有典型江南水乡的风貌，家家户户前街后河，河上小船来往如梭，街上店铺林立。横跨河上的古桥有7座：山塘桥、通贵桥（又名瑞云桥）、星桥、彩云桥（又名半塘桥）、普济桥、望山桥（曾名便山桥）和西山庙桥，竖贯堤上的古桥有8座：白姆桥、毛家桥、桐桥（曾名洞桥、胜安桥）、白公桥、青山桥、绿水桥、斟酌桥和万点桥，而对岸竖贯之桥也是八座，有同善桥（小普济桥）、引善桥等。其中山塘桥、彩云桥、便山桥和洞桥四座桥建于宋代以前。其中通贵桥旁是明代南京吏部尚书吴一鹏的府第。星桥是昔日商业最繁盛的所在。西山庙桥南北两堍分别是花神庙和西山庙。而斟酌桥是山塘河、东山浜、野芳浜的交汇处，是当年画舫云集的所在，桥东堍的花园弄花香袭人，有不少诗词赞美斟酌桥畔的风光，例如：“斟酌桥头花草香，画船载酒醉斜阳。桥边水作鹅黄色，也逐笙歌过半塘。”、“半塘春水绿如渑，赢得桥留斟酌名。桥外酒帘轻扬处，画船箫鼓正酣声。”', 'https://pic5.40017.cn/02/001/46/d4/rBANDFs-lc2ALJEGAAHQf63SO2g480_750x_00.jpg', 2, NULL, 855, 20);
+INSERT INTO `travelnote` VALUES (2, '夜逛七里山塘', '七里山塘又名七狸山塘，正式名称为山塘街，是江苏苏州金阊区一条有将近1200年历史的步行街，西起虎丘山下席场弄，东到阊门外古运河上的渡僧桥，全长3829.6米。\r\n\r\n唐宝历二年（825年），大诗人白居易从杭州调任苏州刺史，为了便利苏州水陆交通，开凿了一条西起虎丘东至阊门的山塘河，山塘河河北修建道路，称为“山塘街”，山塘河和山塘街长约七里，叫“七里山塘”。自古山塘街有“姑苏第一名街”之称。\r\n\r\n山塘街和山塘河有典型江南水乡的风貌，家家户户前街后河，河上小船来往如梭，街上店铺林立。横跨河上的古桥有7座：山塘桥、通贵桥（又名瑞云桥）、星桥、彩云桥（又名半塘桥）、普济桥、望山桥（曾名便山桥）和西山庙桥，竖贯堤上的古桥有8座：白姆桥、毛家桥、桐桥（曾名洞桥、胜安桥）、白公桥、青山桥、绿水桥、斟酌桥和万点桥，而对岸竖贯之桥也是八座，有同善桥（小普济桥）、引善桥等。其中山塘桥、彩云桥、便山桥和洞桥四座桥建于宋代以前。其中通贵桥旁是明代南京吏部尚书吴一鹏的府第。星桥是昔日商业最繁盛的所在。西山庙桥南北两堍分别是花神庙和西山庙。而斟酌桥是山塘河、东山浜、野芳浜的交汇处，是当年画舫云集的所在，桥东堍的花园弄花香袭人，有不少诗词赞美斟酌桥畔的风光，例如：“斟酌桥头花草香，画船载酒醉斜阳。桥边水作鹅黄色，也逐笙歌过半塘。”、“半塘春水绿如渑，赢得桥留斟酌名。桥外酒帘轻扬处，画船箫鼓正酣声。”', 'https://pic5.40017.cn/02/001/46/d4/rBANDFs-lc2ALJEGAAHQf63SO2g480_750x_00.jpg', 1, NULL, 855, 20);
 INSERT INTO `travelnote` VALUES (3, '千年斜塔，雨落虎丘 ', '苏州 人盼了3年的\r\n梦幻喷泉将重新上演！\r\n说说这次旅行\r\n我本是江南人，生于江南长于江南，江南的雨看的多，江南的小桥流水也遇见的很多，所以这里的风景一向甚少能引起的兴趣。大学的四年，我暂居苏州，春时、夏至、秋分、冬雪，每个季节的景色都看遍，唯有虎丘，四年的时间里，我只来过一次。\r\n上一次来虎丘，也是秋日，江南的秋，一直都是我最喜欢的季节。\r\n这一次再来虎丘，我已经毕业，离开苏州有三个多月了。这三个月里我从未回来过，可是刚刚下高铁的瞬间，还是觉得异常的亲切。\r\n【关于行程】\r\n9月23日，秋分。俗话说，秋风起，蟹脚痒。是啊，又到了一年吃大闸蟹的季节了。但是我们这种从小这个季节吃大闸蟹的人来说，这个时间远远还没有到大闸蟹肥美的季节。\r\n每年的9月，苏州的虎丘都会开始有庙会表演，持续时间约有一个月，值得一来\r\n23号一日，就只在虎丘一个景区里。\r\n【关于苏州】\r\n苏州，古称吴，简称为苏，又称姑苏、平江等，是国家历史文化名城和风景旅游城市。苏州属亚热带季风海洋性气候，四季分明，雨量充沛。种植水稻、小麦、油菜，出产棉花、蚕桑、林果，特产有碧螺春茶叶、长江刀鱼、太湖银鱼、阳澄湖大闸蟹等。\r\n【关于交通】\r\n苏州和无锡中间有一个苏南硕放机场，不过机场不大，吞吐量也不高，所以习惯性苏州人出行还是会选择上海浦东或者虹桥飞。\r\n苏州有很多高铁，每天往返于南京上海的铁路有几十趟，但节假日还是要提前购票，不然还是会买不到票。\r\n苏州汽车站有汽车南站、汽车北站，往省内绝大部分都有汽车。吴中汽车站可以到省内周庄、吴江之内的地方。\r\n内部交通\r\n苏州现在有地铁1号线、2号线、4号线，公交也很方便。\r\n【关于美食】\r\n苏式美食有很多，以甜为主。\r\n中秋季节最特色的的就是鲜肉月饼。其他的传统特色美食如松鼠桂鱼、响油鳝糊、碧落虾仁等。\r\n【关于虎丘】\r\n虎丘山海拔34.3米，面积0.19平方公里。景区现有面积100公顷，保护区面积475.9公顷，作为苏州的一个重要旅游窗口，虎丘屡获殊荣，先后被评为全国首批十佳文明风景旅游区示范点，国家AAAAA级旅游景区，全国文明单位。虎丘，原名海涌山，据《史记》记载，吴王阖闾葬于此，传说葬后三日有“白虎蹲其上”，故名虎丘。又一说为“丘如蹲虎”，以形为名。\r\n\r\n\r\n虎丘主景，传说众多\r\n虎丘山海拔34.3米，面积0.19平方公里。山体由侏罗系火山岩浆构成，千人石、试剑石、剑池等山石为流纹岩。虎丘山往东、北、西三个方向的整个平原地区第四系冲积层之下都分布着侏罗系火山岩。\r\n我曾暂居苏州五载，苏州大大小小的景也基本都走过，虎丘自然也不会例外。两年前来虎丘的时候，也是这样的秋天，秋高气爽最是适合出门逛逛了，也恰巧赶上了庙会，不过当初逛的并不仔细，两个小时就走马观花的走了一遭然后离开了。\r\n而这一次来，终于完完整整的浏览了一遭，那些曾经经过，却不知道典故的地方也终于都弄了明白。', 'https://tcw-public.b0.upaiyun.com/youji/2017-09-26/1852img11506414464070gXAJL.jpg!w800', 1, NULL, 844, 33);
-INSERT INTO `travelnote` VALUES (4, '暑期苏州乐园之行', '　今天下午和妈妈去苏州乐园玩。我们有一张苏州乐园的卡，我们刷卡进去的。进去以后我们想先坐森林小火车，不过管理员说森林小火车半个小时以后才开。我和妈妈就先去玩具那儿玩了一会儿。我玩得正高兴，突然妈妈喊我，说“森林小火车来啦!”。我赶快去坐森林小火车。森林小火车开动以后，我顺手拔了几片小树叶。森林小火车绕着乐园转了一圈。我看到了许多玩具，还看见了瀑布，瀑布的水被风吹到了我们的脸上，感觉真凉快!瀑布象一块雪白的布，在太阳下闪闪发光。我们还经过了一个山洞，里面有一点点光，我一点也不害怕。森林小火车在路上有两处停靠点，一个是在一座桥，还有一个是在太空飞船那里。最后森林小火车开进了一个画满宇宙飞船的山洞。我感觉好像来到了太空一样，真好玩啊! 我们下了森林小火车又去玩了一会滑滑梯。后来我们又去了小小世界.一进门我们就看见五颜六色的灯一闪一闪的，真好看!我们坐上了一条黄色的船，船上只有我和妈妈两个人.我们坐船先到了世界风情，那里有很多人物，比如阿凡提，买火柴的小女孩，哪吒......又到了动物世界，里面有许多动物比如小鸟，海豚，海象，海豹......小船又经过童话世界，里面有许多童话故事力的主人公，象白雪公主和七个小矮人，葫芦娃，忍者神龟......让我想起很多有趣的动画片.最后小船快到终点时看到许多用不同国家语言写成的\"再见\"，我只看的懂中文的\"再见\".我们又去沙滩玩了一会，我在那捉了一会小鱼就回家了.今天我玩的可真高兴!', 'https://pic5.40017.cn/01/000/39/40/rBANC1s2b8CAJ5fiAAC7p_kqtr8920_750x_00.jpg', 2, NULL, 832, 25);
-INSERT INTO `travelnote` VALUES (8, '慢游苏州太湖三山岛，看最美太湖日落', '虽然距离太湖不是很远，但一直还未前去一探，眼看秋天来了，天气凉爽了起来，但伴随着的阴雨天气潮闷也紧接着而来。于是，周末约了几个朋友准备去太湖转转，如果有可能环太湖一圈那就更好了。\r\n  太湖，是中国五大淡水湖之一，湖岸线漫长，自然风光优美，且拥有众多形态不一的岛屿，其中这些岛屿中以太湖三山岛最为出名，三山岛由北山、行山、小姑山三座山峰组成，名字也由此而来。同时这里也是国家湿地公园，山水相依，面积虽不大却风光秀丽，明代称之为小蓬莱，故有“太湖蓬莱”的美誉，犹如世外桃源一般隐匿于太湖之中。\r\n  在三山岛的那两天真的不要太惬意，清晨或傍晚岛上闲逛，中午找地方喝喝茶，骑骑单车采采果子，虽然不能环湖但也可以泛舟湖上，尽享湖光山色。这里也比较适合悠闲放松，比较慢节奏的生活，原生态的风景，一派返朴归真的乡野气息，如果能多住上几日也是挺不错的。来到岛上可以买票乘坐游览车游玩，也可以徒步游览，由于岛屿并不是很大，建议徒步游览，当然如果不愿意走太多路也可以租这里的自行车，环湖路相对平缓，比较好骑。我们的游览起点是在这块牌坊前，开始徒步游览三山岛。牌坊上有对联：万顷碧波粼粼泊泊来，三春清风徐徐阵阵至，横批：湖光山色，往后可见“太湖蓬莱”四个大字，描绘的便是此处的太湖水以及岛上清风袅袅的景象，让人心旷神怡。\r\n\r\n', 'https://pic5.40017.cn/03/000/98/0b/rB5oQFu8BgCAWOM3AA2UAI1KnRs316_750x_00.jpg', 1, NULL, 866, NULL);
-INSERT INTO `travelnote` VALUES (10, '穿越人海 の苏州、同里、周庄、上海三日游 ', '拙政园位于娄门内东北街178号，是苏州园林中最大的，也是最著名的一座拙政园始建于明代，王献臣是该园第一位主人。他在嘉靖、正德年间，官居监察御史，晚年仕途不得意，罢官而归，买地造园，借《闲居赋》“拙者之为政”句意，取名为拙政园。园内主要景点有：兰雪堂、芙蓉榭、秫香馆、放眼亭、远香堂、小沧浪、留亭阁、浮翠阁等。\r\n\r\n交通路线：从苏州火车站坐40路西线、202路公交车到齐门站下车步行几百米即可到达。\r\n门票：旺季￥90，景区售票处有好几个，但是入园还是要从东北街南门这个入口进。我国的建筑，从古代的宫殿到近代的一般住房，绝大部分是对称的，左边怎么样，右边也怎么样。苏州园林完全没有在讲究对称，可是也很美，不过有点感觉身在迷宫，也可能是因为人太多的原因。苏州园林在每一个角落都注意图画美。阶砌旁边栽几丛书带草。墙上蔓延着爬山虎或者蔷薇木香。如果开窗正对着白色墙壁，太单调了，给补上几竿竹子或几棵芭蕉。诸如此类。我家附近的公园怎么就只是一个亭子，种些花呢？苏州园林里的门和窗，图案设计和雕镂琢磨功夫都是工艺美术的上品。大致说来，那些门和窗工细而决不庸俗，即使简朴而别具匠心。', 'https://pic5.40017.cn/01/000/35/04/rBLkBls05f6Adqe0AAEmbWuHpC4727_750x_00.jpg', 1, NULL, 1, NULL);
-INSERT INTO `travelnote` VALUES (11, '我和苏州一直有个约会', '当杭州等城市大刀阔斧赶现代化进程的时候，苏州像一个傲娇大家闺秀，丝毫没有打乱自己的信仰，依旧古朴韵律的节奏着。古城区不得肆意建造高楼大厦，新区却另辟道路繁花似锦， 两区功能划分明确，互不打扰，如此便是我最爱这座城市的地方了。\r\n几年间从上海去过无数次苏州了，今年才想着专心写一下这座处处见细节之美的城市。 \r\n建议其实比较随意，不是告诉各位亲们，怎样住宿怎么样吃喝，因为我坚持100个人心中会有100个苏州。 \r\n与其写这个，不如说下不得不去的一些地方吧。 \r\n比如【平江路】和【拙政园】虽然是爆款，但却有它经久不衰的理由。 \r\n除了老景点，每年递增的小资地点也值得一去。比如【李公堤】的一些酒吧，比如【凤凰文化广场】的【自在复合书店】，比如【圆融广场】摩天轮附近的水边，可以沿着走一圈。每一个季节的苏州，都是另一种美。\r\n【夏天的苏州】由于江南的闷热暑气，最适合去园林里坐一坐，郁郁葱葱的树枝，还有洋洋洒洒的荷叶衬托着娇嫩的荷花，园林里的温度要比外面低上了好几度。\r\n【冬日的苏州】我更愿意缩在平江路一条街，吃喝下午茶都在这里解决了。有时候啃20只卤鸡脚，喝杯茶叶，在河边可以欢喜的坐上一下午。没来苏州园林前，常听人说起，移步换景。 半信半疑之间，拿着单反就这么杀进园子。发现果不其然。每走几步，构图景色就完全不一样；并且园林常常用到“借景”的手法，很有层次。\r\n\r\n', 'https://pic5.40017.cn/02/001/35/40/rBLkCVs068KAcpKEAAKm7DJmGTU363_750x_00.jpg', 2, NULL, 869, NULL);
-INSERT INTO `travelnote` VALUES (12, '苏州.山塘街随拍', '山塘街历史悠久，始建于唐代宝历年间，是国家AAAA级旅游景区，被称誉为“姑苏第一名街”。此街位于古城苏州的西北部，东连“红尘中一、二等富贵风流之地”（《红楼梦》中描述）阊门，西接“吴中第一名胜”虎丘，全长约3600米，为唐代白居易率众修成。后人称之“白公堤”，又因堤长七华里，称为七里山塘。山塘街因其独特的地理位置和优越的水陆交通条件，曾是明清时期商贸、文化最为发达的街区之一。“上有天堂，下有苏杭。杭州有西湖，苏州有山塘。两处好地方，无限好风光。”这便是对山塘街的生动写照。山塘街东段导览图。七里山塘上有诸多的古寺、古祠、古牌坊、古会馆……这些古建筑，精雕细刻，古色古香，一派岁月沧桑感；还有耳熟能详的半塘传说，陈圆圆、董小宛等，装点了山塘的婉约一面，《山塘绝句》中就有“山塘满路皆脂粉”的句子；但五人墓和葛贤墓，却给游客留下另一种感慨。山塘街可以分为东西两段，东段从阊门渡僧桥起至半塘桥，这一段大多是商铺和住家，各种商店一家挨着一家，东段又以星桥一带最为热闹繁华。山塘街的西段指半塘桥至虎丘山。这一段渐近郊外，河面比东段要开阔，河边或绿树成荫、芳草依依，或蒹葭苍苍、村舍野艇。\r\n\r\n', 'https://pic5.40017.cn/01/001/33/fc/rBANC1s0zriAC57uAAF38YS8mhE572_750x_00.jpg', 3, NULL, 868, NULL);
-INSERT INTO `travelnote` VALUES (13, '那日花开，在苏州最隐逸的园林——游艺圃', '艺圃前身是明代进士袁祖庚所建的醉颖堂。袁官至浙江按察副使(考核官吏、管理司法的官)，四十岁后辞官退隐，在此造宅园，悬挂匾额曰“城市山林”。1659年，清初为明崇祯进士姜埰（号敬亭，山东莱阳人）辗转寓居苏州，成了艺圃的第三任主人，并改药圃为颐圃、敬亭山房。姜埰逝世，次子姜实节又将敬亭山房改名为艺圃。后来此园又数易其主，但园名仍叫艺圃。道光十九年（公元1839年）绸缎同业立为“七襄公所”，现留有小篆匾额。到了民国初，由于经济问题，园内房屋出租为民宅，艺圃变得支离零落，破败不堪。上世纪80年代，政府出资对其进行了完整修缮，2001年又把东部住宅部分收归艺圃，修复开放。艺圃的第二任主人是明代状元文震孟（文征明之曾孙），官至大学士，改“醉颖堂”名为“药圃”，文震孟尽管地位愈来愈高，但在艺圃却从未扩充过一分土地、加建过一楹房屋，基本上保存了“醉颖堂”时期“写意山水园”的特色。修缮后的窗是典型的明式格子窗，窗外的亭子就是艺圃有名的“乳鱼亭”，同样体现了明代的风格，据说部分构件为明代遗物。', 'https://pic5.40017.cn/01/000/57/ec/rBANC1tIt7eAC46qAAHvVZJbFWM418_750x_00.jpg', 1, NULL, 855, NULL);
-INSERT INTO `travelnote` VALUES (14, '【苏州】倾“姑苏城外寒山寺”而往 ', '啊~~~先让本地瓜感叹几句。\r\n中秋节去的姑苏,然后上上上星期才把图片找好,顺便修了一下。新手,照片修的不好,纯属按照个人的喜好来修的(虽然说本地瓜的品味有待提升),打开这个网页的各位也别叨逼叨,我自己知道就好了~颜色什么呀~配色什么呀~要多浮夸有多浮夸~我也造,毕竟我自己都看不下去了,嗯~额!~懒癌患者。\r\n因为我是中秋节去的,所以说你们懂呀!!!那就是人多呀~多~呀~虽然说下着雨~但是也阻挡不了人们的热情~对,就是这么热情。\r\n“姑苏城外寒山寺,夜半钟声到客船”\r\n小时候,学习这首诗词的时候就蛮有赶脚的,印象蛮深刻的。直到长大了之后才知道姑苏原来就是苏州。\r\n一心念念叨叨的江南怎么能少得了苏州呢?\r\n直到中秋的前一个周这个念头才越发的强烈起来了,于是就开始定各种票,网上搜罗各种攻略:哪里好玩呀?什么好吃呀?天气怎么样?要穿什么呀?\r\n在我的三观里,不存在什么说走就走的旅行,没有目的的旅行称之为旅游。为了留出肚子来吃苏州的小吃,我在逛完了拙政园之后去全家…… 全家…… 买了三明治!~对你木有看错!就是三明治~\r\n社交软件上一搜,苏州松鹤楼的松鼠鱼蛮有名字的……但是好大一条……太甜太腻……我选择了放弃……投奔了桂花糕……生煎……糕点的怀抱……\r\nps:对了,每个景点都有客服中心,里面有电视讲解这个景点的历史故事,还有免费的导游讲解,不够有些要凑够人数……也有讲解机……这种地方最好跟着听一听,毕竟中国文化博大精深嘛~我跟着听了一点点的~不全~所以下面基本是我的碎碎念和照片~毕竟网上游记辣么多~百度都有介绍~我是按照我行走的步伐来排照片的~\r\n在ps:票都是在网络上买的,进景点的时候有的直接刷身份证就好,但是,寒山寺需要取票之后,拿票根进去的~', 'https://pic5.40017.cn/02/001/6a/02/rBLkCVtVeTiAB19lAAEYhhG11kw847_750x_00.jpg', 1, NULL, 832, NULL);
-INSERT INTO `travelnote` VALUES (15, '苏州 闲散林木，渎一无二，古镇风韵', '门对香溪，背靠灵岩，\r\n乾隆皇帝每次下江南游木渎古镇的时候，必到虹饮山房，\r\n在这里游园、看戏、品茗、吟诗，直到夜色降临，才依依不舍离去。\r\n古松园内的罗汉松，苍翠虬劲。榜眼府第的石雕，精美至极。品尝完最美味的藏书羊肉，来到这里，没想到白象这么大，\r\n闲闲散散地沉浸在秋林中，花儿依然绽放，还和小伙伴们玩了玩真人CS。\r\n\r\n苏州素来以山水秀丽、园林典雅而闻名天下，\r\n有“江南园林甲天下，苏州园林甲江南”的美称，\r\n又因其小桥流水人家的水乡古城特色，有“东方水都”之称。\r\n如同苏州的精致园林一般，姑苏的春色，也是伴着吴侬软语，和着咿呀的江南小调，悄然显露。苏州，就是这需要慢步细行的温柔乡。“苏州园林甲天下”，苏州园林是建筑、山水、花木、雕刻、书画的综合艺术品，集自然美和艺术美于一体，构成了曲折迂回、步移景换的画面。除此之外，水乡古镇也是苏州的一大特色，四面环水，古代只有舟船与外界相通，所以街区和建筑保存完好。木渎古镇的历史同苏州古城一样悠久，这座水乡古镇本身稀松平常，沿着主街山塘街自西向东排布的古典园林严家花园、虹饮山房、古松园、榜眼府第，倒是带来了“园林古镇”的特色。\r\n伴着木渎山塘街的香溪和伍子胥率众开挖的人工运河胥江在东部的古桥斜桥下相汇，坐游船在充满历史故事的河道上晃晃悠悠，再听船娘用吴侬软语唱一曲也很不错。', 'https://pic5.40017.cn/02/000/4d/62/rBANDFtCd1WAW6SvAAJ6SsVUnks285_750x_00.jpg', 2, NULL, 844, NULL);
-INSERT INTO `travelnote` VALUES (16, '【冬游苏州】实拍太湖边壮丽璀璨的夕阳美景', '明天又要出门，去南岳衡山参加南岳摄影大赛，领略南岳的冬日美景，今天就再发一组苏州的片子，看看苏州太湖边东山岛上一次壮丽璀璨的夕阳美景吧！   我们是12月30日那天在同里用完午餐后，坐车赶往东山岛的。先在太湖码头坐游船，在烟波浩渺的太湖转了转，然后到达东山岛东部的启园。在启园转了一圈后，在太阳将要落山的半个多小时前，赶到了拍摄夕阳之地，湖滨公路旁一处比较开阔的地方。\r\n先看看启园吧，启园的园址原名叶家浜，是一处始建于民国时代的汉族古典园林建筑。原为民国实业家席启荪的私家花园，俗称席家花园，1933年席氏为纪念其上祖在此迎候康熙皇帝而兴建，占地50余亩。启园为江南不多见的山麓湖滨园林，依山而筑，傍湖而立，介乎山水之间。1984年被国务院批准列为太湖风景名胜区主要景点之一，经政府多次拨款整修扩建，才具今日之风貌。游罢启园，就在太湖东山镇外临湖的一条公路旁，拍到了这次日落。说实话，那天的日落很一般，日落时天空中没有云，光比大，光线强，俺加了“反渐变”镜，效果都很一般。直到太阳由亮到白，由白到黄，由黄到红，成了一轮红日以后，才有了“太湖夕阳”那壮丽璀璨的感觉，呵呵：', 'https://pic5.40017.cn/02/000/38/5e/rBLkCFs1utGANBLiAAC9pvx-ulk812_750x_00.jpg', 3, NULL, 865, NULL);
-INSERT INTO `travelnote` VALUES (17, '苏州园林—小游网师园', '网师园，一个富有诗意的名字，在苏州，名气不及拙政园，留园，却也是精致苏州园林的代表之作，敢问姑苏园林如此之多，而外国友人们却独爱网师园，这是为何？这座园子小而精的特性，的确最能代表园林意境。这可得从1978年说起呢。  \r\n\r\n1978年，美国纽约大都会艺术博物馆的友好人士来苏州 参观游览，被这里的 园林所陶醉 ，决意在其馆中建一座园林建筑。经过和苏州方面商谈，最后 决定仿照网师园的 殿春簃小院， 为了让美国 人民欣赏 中中国 的园林艺术 。这座园子最后 取名为“明轩”。 明轩由苏州园林工匠设计建造，一下子轰动了纽约 、轰动了美国 。施工期间，美国前总统 尼克松几次前去 参观 。明轩作为苏州园林的代表，开创了中国园林艺术 走出国门的先河。可能就是这个原因，导致每天来这里参观的外国人特别多，这里也是苏州园林中唯一开放也花园的地方，晚上在这里品上一壶茶，听上一段昆曲或评弹，享受一段正宗的苏式生活，可不美哉！  \r\n\r\n记得小时候来过这里，对这里的印象的确不深，不过从位于带城桥路边的阔家头 小巷子进去，沿路经过沈德潜故居和一些卖旅游纪念品的小摊，我们就进入了网师园，路不长，一两百米而已，却一下子从城市喧嚣走进了宁静氛围，一扇不大的对开门，走进厅堂，穿过回廊，一片池水假山，周边亭台楼阁，感觉甚好，坐在池边廊下的人们，说这话，聊着天，有带着小孩来感受园林的，有拿着画笔来描绘园林的，也有早晨来园林锻炼的年老者，总之，人少的时候，园子显得非常和谐，这也是普通老百姓生活在这里的真实写照。  ', 'https://pic5.40017.cn/01/001/3a/6b/rBLkBls2ya2AQ9TGAADIjhq5AYg787_750x_00.jpg', 3, NULL, 864, NULL);
-INSERT INTO `travelnote` VALUES (18, '渔洋山上观太湖、独行金鸡湖', '订购同程旅游网的酒店有幸获得100元激活码，又看到同程19日在苏州举办“细草摄影分享会”，毅然报名参加。同时在同程旅游客户端用激活码预订了苏州渔洋山景区的门票，80元，全免了哎。并上12306预订好火车票。\r\n\r\n19日上午在虹桥火车站乘6:42的动车，半个多小时就到苏州了，好快啊。7点半在苏州南广场乘上69路，5元。行程一个小时左右，该车途经苏州乐园和木渎古镇，很方便的。\r\n\r\n到景区后给景区检票人员看了电子门票后就可以进入了，10元钱乘坐景区观光车直接到山顶渔洋阁，贪婪地纵览太湖美景。接着进渔洋阁参观有关渔洋山的历史文化。看图片吧。经过法华寺，来到千斤井，知道了伍子胥与千斤小姐的传说。当年伍子胥遭楚平王追杀，穷困潦倒，是一浣纱小姐给于救助而生，日后成为吴国重臣后携千金前来报恩，得知小姐因救他而招诬陷投井而亡，伍子胥来到井边悲叹道：尔浣纱，我行乞，我腹饱，尔身溺，十年后，千金报。咬破​手指在石上血书：恩重如山，并将千金倒入井中。以示哀思之心和表达感恩之心。 ‍ ', 'https://pic5.40017.cn/01/000/39/5a/rBLkBls2QFOAeobZAAEK1QgO-Z0659_750x_00.jpg', 3, NULL, 863, NULL);
+INSERT INTO `travelnote` VALUES (4, '暑期苏州乐园之行', '　今天下午和妈妈去苏州乐园玩。我们有一张苏州乐园的卡，我们刷卡进去的。进去以后我们想先坐森林小火车，不过管理员说森林小火车半个小时以后才开。我和妈妈就先去玩具那儿玩了一会儿。我玩得正高兴，突然妈妈喊我，说“森林小火车来啦!”。我赶快去坐森林小火车。森林小火车开动以后，我顺手拔了几片小树叶。森林小火车绕着乐园转了一圈。我看到了许多玩具，还看见了瀑布，瀑布的水被风吹到了我们的脸上，感觉真凉快!瀑布象一块雪白的布，在太阳下闪闪发光。我们还经过了一个山洞，里面有一点点光，我一点也不害怕。森林小火车在路上有两处停靠点，一个是在一座桥，还有一个是在太空飞船那里。最后森林小火车开进了一个画满宇宙飞船的山洞。我感觉好像来到了太空一样，真好玩啊! 我们下了森林小火车又去玩了一会滑滑梯。后来我们又去了小小世界.一进门我们就看见五颜六色的灯一闪一闪的，真好看!我们坐上了一条黄色的船，船上只有我和妈妈两个人.我们坐船先到了世界风情，那里有很多人物，比如阿凡提，买火柴的小女孩，哪吒......又到了动物世界，里面有许多动物比如小鸟，海豚，海象，海豹......小船又经过童话世界，里面有许多童话故事力的主人公，象白雪公主和七个小矮人，葫芦娃，忍者神龟......让我想起很多有趣的动画片.最后小船快到终点时看到许多用不同国家语言写成的\"再见\"，我只看的懂中文的\"再见\".我们又去沙滩玩了一会，我在那捉了一会小鱼就回家了.今天我玩的可真高兴!', 'https://pic5.40017.cn/01/000/39/40/rBANC1s2b8CAJ5fiAAC7p_kqtr8920_750x_00.jpg', 1, NULL, 832, 25);
+INSERT INTO `travelnote` VALUES (8, '慢游苏州太湖三山岛，看最美太湖日落', '虽然距离太湖不是很远，但一直还未前去一探，眼看秋天来了，天气凉爽了起来，但伴随着的阴雨天气潮闷也紧接着而来。于是，周末约了几个朋友准备去太湖转转，如果有可能环太湖一圈那就更好了。\r\n  太湖，是中国五大淡水湖之一，湖岸线漫长，自然风光优美，且拥有众多形态不一的岛屿，其中这些岛屿中以太湖三山岛最为出名，三山岛由北山、行山、小姑山三座山峰组成，名字也由此而来。同时这里也是国家湿地公园，山水相依，面积虽不大却风光秀丽，明代称之为小蓬莱，故有“太湖蓬莱”的美誉，犹如世外桃源一般隐匿于太湖之中。\r\n  在三山岛的那两天真的不要太惬意，清晨或傍晚岛上闲逛，中午找地方喝喝茶，骑骑单车采采果子，虽然不能环湖但也可以泛舟湖上，尽享湖光山色。这里也比较适合悠闲放松，比较慢节奏的生活，原生态的风景，一派返朴归真的乡野气息，如果能多住上几日也是挺不错的。来到岛上可以买票乘坐游览车游玩，也可以徒步游览，由于岛屿并不是很大，建议徒步游览，当然如果不愿意走太多路也可以租这里的自行车，环湖路相对平缓，比较好骑。我们的游览起点是在这块牌坊前，开始徒步游览三山岛。牌坊上有对联：万顷碧波粼粼泊泊来，三春清风徐徐阵阵至，横批：湖光山色，往后可见“太湖蓬莱”四个大字，描绘的便是此处的太湖水以及岛上清风袅袅的景象，让人心旷神怡。\r\n\r\n', 'https://pic5.40017.cn/03/000/98/0b/rB5oQFu8BgCAWOM3AA2UAI1KnRs316_750x_00.jpg', 1, NULL, 866, 40);
+INSERT INTO `travelnote` VALUES (10, '穿越人海 の苏州、同里、周庄三日游 ', '拙政园位于娄门内东北街178号，是苏州园林中最大的，也是最著名的一座拙政园始建于明代，王献臣是该园第一位主人。他在嘉靖、正德年间，官居监察御史，晚年仕途不得意，罢官而归，买地造园，借《闲居赋》“拙者之为政”句意，取名为拙政园。园内主要景点有：兰雪堂、芙蓉榭、秫香馆、放眼亭、远香堂、小沧浪、留亭阁、浮翠阁等。\r\n\r\n交通路线：从苏州火车站坐40路西线、202路公交车到齐门站下车步行几百米即可到达。\r\n门票：旺季￥90，景区售票处有好几个，但是入园还是要从东北街南门这个入口进。我国的建筑，从古代的宫殿到近代的一般住房，绝大部分是对称的，左边怎么样，右边也怎么样。苏州园林完全没有在讲究对称，可是也很美，不过有点感觉身在迷宫，也可能是因为人太多的原因。苏州园林在每一个角落都注意图画美。阶砌旁边栽几丛书带草。墙上蔓延着爬山虎或者蔷薇木香。如果开窗正对着白色墙壁，太单调了，给补上几竿竹子或几棵芭蕉。诸如此类。我家附近的公园怎么就只是一个亭子，种些花呢？苏州园林里的门和窗，图案设计和雕镂琢磨功夫都是工艺美术的上品。大致说来，那些门和窗工细而决不庸俗，即使简朴而别具匠心。', 'https://pic5.40017.cn/01/000/35/04/rBLkBls05f6Adqe0AAEmbWuHpC4727_750x_00.jpg', 2, NULL, 1, 50);
+INSERT INTO `travelnote` VALUES (11, '我和苏州一直有个约会', '当杭州等城市大刀阔斧赶现代化进程的时候，苏州像一个傲娇大家闺秀，丝毫没有打乱自己的信仰，依旧古朴韵律的节奏着。古城区不得肆意建造高楼大厦，新区却另辟道路繁花似锦， 两区功能划分明确，互不打扰，如此便是我最爱这座城市的地方了。\r\n几年间从上海去过无数次苏州了，今年才想着专心写一下这座处处见细节之美的城市。 \r\n建议其实比较随意，不是告诉各位亲们，怎样住宿怎么样吃喝，因为我坚持100个人心中会有100个苏州。 \r\n与其写这个，不如说下不得不去的一些地方吧。 \r\n比如【平江路】和【拙政园】虽然是爆款，但却有它经久不衰的理由。 \r\n除了老景点，每年递增的小资地点也值得一去。比如【李公堤】的一些酒吧，比如【凤凰文化广场】的【自在复合书店】，比如【圆融广场】摩天轮附近的水边，可以沿着走一圈。每一个季节的苏州，都是另一种美。\r\n【夏天的苏州】由于江南的闷热暑气，最适合去园林里坐一坐，郁郁葱葱的树枝，还有洋洋洒洒的荷叶衬托着娇嫩的荷花，园林里的温度要比外面低上了好几度。\r\n【冬日的苏州】我更愿意缩在平江路一条街，吃喝下午茶都在这里解决了。有时候啃20只卤鸡脚，喝杯茶叶，在河边可以欢喜的坐上一下午。没来苏州园林前，常听人说起，移步换景。 半信半疑之间，拿着单反就这么杀进园子。发现果不其然。每走几步，构图景色就完全不一样；并且园林常常用到“借景”的手法，很有层次。\r\n\r\n', 'https://pic5.40017.cn/02/001/35/40/rBLkCVs068KAcpKEAAKm7DJmGTU363_750x_00.jpg', 2, NULL, 869, 25);
+INSERT INTO `travelnote` VALUES (12, '苏州.山塘街随拍', '山塘街历史悠久，始建于唐代宝历年间，是国家AAAA级旅游景区，被称誉为“姑苏第一名街”。此街位于古城苏州的西北部，东连“红尘中一、二等富贵风流之地”（《红楼梦》中描述）阊门，西接“吴中第一名胜”虎丘，全长约3600米，为唐代白居易率众修成。后人称之“白公堤”，又因堤长七华里，称为七里山塘。山塘街因其独特的地理位置和优越的水陆交通条件，曾是明清时期商贸、文化最为发达的街区之一。“上有天堂，下有苏杭。杭州有西湖，苏州有山塘。两处好地方，无限好风光。”这便是对山塘街的生动写照。山塘街东段导览图。七里山塘上有诸多的古寺、古祠、古牌坊、古会馆……这些古建筑，精雕细刻，古色古香，一派岁月沧桑感；还有耳熟能详的半塘传说，陈圆圆、董小宛等，装点了山塘的婉约一面，《山塘绝句》中就有“山塘满路皆脂粉”的句子；但五人墓和葛贤墓，却给游客留下另一种感慨。山塘街可以分为东西两段，东段从阊门渡僧桥起至半塘桥，这一段大多是商铺和住家，各种商店一家挨着一家，东段又以星桥一带最为热闹繁华。山塘街的西段指半塘桥至虎丘山。这一段渐近郊外，河面比东段要开阔，河边或绿树成荫、芳草依依，或蒹葭苍苍、村舍野艇。\r\n\r\n', 'https://pic5.40017.cn/01/001/33/fc/rBANC1s0zriAC57uAAF38YS8mhE572_750x_00.jpg', 2, NULL, 868, 34);
+INSERT INTO `travelnote` VALUES (13, '那日花开，在苏州最隐逸的园林', '艺圃前身是明代进士袁祖庚所建的醉颖堂。袁官至浙江按察副使(考核官吏、管理司法的官)，四十岁后辞官退隐，在此造宅园，悬挂匾额曰“城市山林”。1659年，清初为明崇祯进士姜埰（号敬亭，山东莱阳人）辗转寓居苏州，成了艺圃的第三任主人，并改药圃为颐圃、敬亭山房。姜埰逝世，次子姜实节又将敬亭山房改名为艺圃。后来此园又数易其主，但园名仍叫艺圃。道光十九年（公元1839年）绸缎同业立为“七襄公所”，现留有小篆匾额。到了民国初，由于经济问题，园内房屋出租为民宅，艺圃变得支离零落，破败不堪。上世纪80年代，政府出资对其进行了完整修缮，2001年又把东部住宅部分收归艺圃，修复开放。艺圃的第二任主人是明代状元文震孟（文征明之曾孙），官至大学士，改“醉颖堂”名为“药圃”，文震孟尽管地位愈来愈高，但在艺圃却从未扩充过一分土地、加建过一楹房屋，基本上保存了“醉颖堂”时期“写意山水园”的特色。修缮后的窗是典型的明式格子窗，窗外的亭子就是艺圃有名的“乳鱼亭”，同样体现了明代的风格，据说部分构件为明代遗物。', 'https://pic5.40017.cn/01/000/57/ec/rBANC1tIt7eAC46qAAHvVZJbFWM418_750x_00.jpg', 2, NULL, 855, 25);
+INSERT INTO `travelnote` VALUES (14, '倾“姑苏城外寒山寺”而往 ', '啊~~~先让本地瓜感叹几句。\r\n中秋节去的姑苏,然后上上上星期才把图片找好,顺便修了一下。新手,照片修的不好,纯属按照个人的喜好来修的(虽然说本地瓜的品味有待提升),打开这个网页的各位也别叨逼叨,我自己知道就好了~颜色什么呀~配色什么呀~要多浮夸有多浮夸~我也造,毕竟我自己都看不下去了,嗯~额!~懒癌患者。\r\n因为我是中秋节去的,所以说你们懂呀!!!那就是人多呀~多~呀~虽然说下着雨~但是也阻挡不了人们的热情~对,就是这么热情。\r\n“姑苏城外寒山寺,夜半钟声到客船”\r\n小时候,学习这首诗词的时候就蛮有赶脚的,印象蛮深刻的。直到长大了之后才知道姑苏原来就是苏州。\r\n一心念念叨叨的江南怎么能少得了苏州呢?\r\n直到中秋的前一个周这个念头才越发的强烈起来了,于是就开始定各种票,网上搜罗各种攻略:哪里好玩呀?什么好吃呀?天气怎么样?要穿什么呀?\r\n在我的三观里,不存在什么说走就走的旅行,没有目的的旅行称之为旅游。为了留出肚子来吃苏州的小吃,我在逛完了拙政园之后去全家…… 全家…… 买了三明治!~对你木有看错!就是三明治~\r\n社交软件上一搜,苏州松鹤楼的松鼠鱼蛮有名字的……但是好大一条……太甜太腻……我选择了放弃……投奔了桂花糕……生煎……糕点的怀抱……\r\nps:对了,每个景点都有客服中心,里面有电视讲解这个景点的历史故事,还有免费的导游讲解,不够有些要凑够人数……也有讲解机……这种地方最好跟着听一听,毕竟中国文化博大精深嘛~我跟着听了一点点的~不全~所以下面基本是我的碎碎念和照片~毕竟网上游记辣么多~百度都有介绍~我是按照我行走的步伐来排照片的~\r\n在ps:票都是在网络上买的,进景点的时候有的直接刷身份证就好,但是,寒山寺需要取票之后,拿票根进去的~', 'https://pic5.40017.cn/02/001/6a/02/rBLkCVtVeTiAB19lAAEYhhG11kw847_750x_00.jpg', 0, NULL, 832, 25);
+INSERT INTO `travelnote` VALUES (15, '苏州 闲散林木，渎一无二，古镇风韵', '门对香溪，背靠灵岩，\r\n乾隆皇帝每次下江南游木渎古镇的时候，必到虹饮山房，\r\n在这里游园、看戏、品茗、吟诗，直到夜色降临，才依依不舍离去。\r\n古松园内的罗汉松，苍翠虬劲。榜眼府第的石雕，精美至极。品尝完最美味的藏书羊肉，来到这里，没想到白象这么大，\r\n闲闲散散地沉浸在秋林中，花儿依然绽放，还和小伙伴们玩了玩真人CS。\r\n\r\n苏州素来以山水秀丽、园林典雅而闻名天下，\r\n有“江南园林甲天下，苏州园林甲江南”的美称，\r\n又因其小桥流水人家的水乡古城特色，有“东方水都”之称。\r\n如同苏州的精致园林一般，姑苏的春色，也是伴着吴侬软语，和着咿呀的江南小调，悄然显露。苏州，就是这需要慢步细行的温柔乡。“苏州园林甲天下”，苏州园林是建筑、山水、花木、雕刻、书画的综合艺术品，集自然美和艺术美于一体，构成了曲折迂回、步移景换的画面。除此之外，水乡古镇也是苏州的一大特色，四面环水，古代只有舟船与外界相通，所以街区和建筑保存完好。木渎古镇的历史同苏州古城一样悠久，这座水乡古镇本身稀松平常，沿着主街山塘街自西向东排布的古典园林严家花园、虹饮山房、古松园、榜眼府第，倒是带来了“园林古镇”的特色。\r\n伴着木渎山塘街的香溪和伍子胥率众开挖的人工运河胥江在东部的古桥斜桥下相汇，坐游船在充满历史故事的河道上晃晃悠悠，再听船娘用吴侬软语唱一曲也很不错。', 'https://pic5.40017.cn/02/000/4d/62/rBANDFtCd1WAW6SvAAJ6SsVUnks285_750x_00.jpg', 0, NULL, 844, 24);
+INSERT INTO `travelnote` VALUES (16, '实拍太湖边壮丽璀璨的夕阳美景', '明天又要出门，去南岳衡山参加南岳摄影大赛，领略南岳的冬日美景，今天就再发一组苏州的片子，看看苏州太湖边东山岛上一次壮丽璀璨的夕阳美景吧！   我们是12月30日那天在同里用完午餐后，坐车赶往东山岛的。先在太湖码头坐游船，在烟波浩渺的太湖转了转，然后到达东山岛东部的启园。在启园转了一圈后，在太阳将要落山的半个多小时前，赶到了拍摄夕阳之地，湖滨公路旁一处比较开阔的地方。\r\n先看看启园吧，启园的园址原名叶家浜，是一处始建于民国时代的汉族古典园林建筑。原为民国实业家席启荪的私家花园，俗称席家花园，1933年席氏为纪念其上祖在此迎候康熙皇帝而兴建，占地50余亩。启园为江南不多见的山麓湖滨园林，依山而筑，傍湖而立，介乎山水之间。1984年被国务院批准列为太湖风景名胜区主要景点之一，经政府多次拨款整修扩建，才具今日之风貌。游罢启园，就在太湖东山镇外临湖的一条公路旁，拍到了这次日落。说实话，那天的日落很一般，日落时天空中没有云，光比大，光线强，俺加了“反渐变”镜，效果都很一般。直到太阳由亮到白，由白到黄，由黄到红，成了一轮红日以后，才有了“太湖夕阳”那壮丽璀璨的感觉，呵呵：', 'https://pic5.40017.cn/02/000/38/5e/rBLkCFs1utGANBLiAAC9pvx-ulk812_750x_00.jpg', 0, NULL, 865, 3);
+INSERT INTO `travelnote` VALUES (17, '苏州园林—小游网师园', '网师园，一个富有诗意的名字，在苏州，名气不及拙政园，留园，却也是精致苏州园林的代表之作，敢问姑苏园林如此之多，而外国友人们却独爱网师园，这是为何？这座园子小而精的特性，的确最能代表园林意境。这可得从1978年说起呢。  \r\n\r\n1978年，美国纽约大都会艺术博物馆的友好人士来苏州 参观游览，被这里的 园林所陶醉 ，决意在其馆中建一座园林建筑。经过和苏州方面商谈，最后 决定仿照网师园的 殿春簃小院， 为了让美国 人民欣赏 中中国 的园林艺术 。这座园子最后 取名为“明轩”。 明轩由苏州园林工匠设计建造，一下子轰动了纽约 、轰动了美国 。施工期间，美国前总统 尼克松几次前去 参观 。明轩作为苏州园林的代表，开创了中国园林艺术 走出国门的先河。可能就是这个原因，导致每天来这里参观的外国人特别多，这里也是苏州园林中唯一开放也花园的地方，晚上在这里品上一壶茶，听上一段昆曲或评弹，享受一段正宗的苏式生活，可不美哉！  \r\n\r\n记得小时候来过这里，对这里的印象的确不深，不过从位于带城桥路边的阔家头 小巷子进去，沿路经过沈德潜故居和一些卖旅游纪念品的小摊，我们就进入了网师园，路不长，一两百米而已，却一下子从城市喧嚣走进了宁静氛围，一扇不大的对开门，走进厅堂，穿过回廊，一片池水假山，周边亭台楼阁，感觉甚好，坐在池边廊下的人们，说这话，聊着天，有带着小孩来感受园林的，有拿着画笔来描绘园林的，也有早晨来园林锻炼的年老者，总之，人少的时候，园子显得非常和谐，这也是普通老百姓生活在这里的真实写照。  ', 'https://pic5.40017.cn/01/001/3a/6b/rBLkBls2ya2AQ9TGAADIjhq5AYg787_750x_00.jpg', 0, NULL, 864, 5);
+INSERT INTO `travelnote` VALUES (18, '渔洋山上观太湖、独行金鸡湖', '订购同程旅游网的酒店有幸获得100元激活码，又看到同程19日在苏州举办“细草摄影分享会”，毅然报名参加。同时在同程旅游客户端用激活码预订了苏州渔洋山景区的门票，80元，全免了哎。并上12306预订好火车票。\r\n\r\n19日上午在虹桥火车站乘6:42的动车，半个多小时就到苏州了，好快啊。7点半在苏州南广场乘上69路，5元。行程一个小时左右，该车途经苏州乐园和木渎古镇，很方便的。\r\n\r\n到景区后给景区检票人员看了电子门票后就可以进入了，10元钱乘坐景区观光车直接到山顶渔洋阁，贪婪地纵览太湖美景。接着进渔洋阁参观有关渔洋山的历史文化。看图片吧。经过法华寺，来到千斤井，知道了伍子胥与千斤小姐的传说。当年伍子胥遭楚平王追杀，穷困潦倒，是一浣纱小姐给于救助而生，日后成为吴国重臣后携千金前来报恩，得知小姐因救他而招诬陷投井而亡，伍子胥来到井边悲叹道：尔浣纱，我行乞，我腹饱，尔身溺，十年后，千金报。咬破​手指在石上血书：恩重如山，并将千金倒入井中。以示哀思之心和表达感恩之心。 ‍ ', 'https://pic5.40017.cn/01/000/39/5a/rBLkBls2QFOAeobZAAEK1QgO-Z0659_750x_00.jpg', 0, NULL, 863, 72);
 
 -- ----------------------------
 -- Table structure for travelnotecomment
@@ -444,7 +559,7 @@ CREATE TABLE `travelnoteprise`  (
   INDEX `fk_travelNotePrise_user1_idx`(`user_userId`) USING BTREE,
   CONSTRAINT `fk_travelNotePrise_travelNote1` FOREIGN KEY (`travelNote_travelNoteId`) REFERENCES `travelnote` (`travelnoteid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_travelNotePrise_user1` FOREIGN KEY (`user_userId`) REFERENCES `user` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user
@@ -455,7 +570,7 @@ CREATE TABLE `user`  (
   `userName` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `userPwd` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `userPhone` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `userImage` varchar(400) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `userImage` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`userPhone`) USING BTREE,
   INDEX `userId`(`userId`) USING BTREE,
   INDEX `userId_2`(`userId`) USING BTREE,
@@ -480,31 +595,22 @@ CREATE TABLE `user`  (
   INDEX `userId_21`(`userId`) USING BTREE,
   INDEX `userId_22`(`userId`) USING BTREE,
   INDEX `userId_23`(`userId`) USING BTREE,
-  INDEX `userId_24`(`userId`) USING BTREE,
-  INDEX `userId_25`(`userId`) USING BTREE,
-  INDEX `userId_26`(`userId`) USING BTREE,
-  INDEX `userId_27`(`userId`) USING BTREE,
-  INDEX `userId_28`(`userId`) USING BTREE,
-  INDEX `userId_29`(`userId`) USING BTREE,
-  INDEX `userId_30`(`userId`) USING BTREE,
-  INDEX `userId_31`(`userId`) USING BTREE,
-  INDEX `userId_32`(`userId`) USING BTREE,
-  INDEX `userId_33`(`userId`) USING BTREE
+  INDEX `userId_24`(`userId`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 870 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (832, '徐洁', '665544', '12390675632', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=347837335,1617350328&fm=27&gp=0.jpg');
-INSERT INTO `user` VALUES (1, '王思聪', '213654', '13103907892', 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=4164636213,1136469274&fm=27&gp=0.jpg');
+INSERT INTO `user` VALUES (832, '徐洁', '665544', '12390675632', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2891276763,2105810070&fm=27&gp=0.jpg');
+INSERT INTO `user` VALUES (1, '王思聪', '213654', '13103907892', 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=850016154,2966264409&fm=27&gp=0.jpg');
 INSERT INTO `user` VALUES (868, 'tom', '34b7da764b21d298ef307d04d8152dc5', '15874236654', 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2080335900,1605411603&fm=27&gp=0.jpg');
 INSERT INTO `user` VALUES (844, '樟树街', '224533', '18262047890', 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1763044357,684998663&fm=27&gp=0.jpg');
 INSERT INTO `user` VALUES (864, '陈梦杰', '77ga441', '18265478963', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2612050777,637755064&fm=27&gp=0.jpg');
-INSERT INTO `user` VALUES (869, '唐心', '522991', '18325964789', 'http://img4.imgtn.bdimg.com/it/u=1013605119,967343947&fm=26&gp=0.jpg');
-INSERT INTO `user` VALUES (855, '陈林', '123456', '18360839064', 'http://img0.imgtn.bdimg.com/it/u=3967983787,3368227311&fm=26&gp=0.jpg');
-INSERT INTO `user` VALUES (865, '沈栋', '49154ae5', '18365419676', 'http://img5.imgtn.bdimg.com/it/u=4203368071,880109216&fm=26&gp=0.jpg');
-INSERT INTO `user` VALUES (866, '流畅', '226632', '18562038772', 'http://img5.imgtn.bdimg.com/it/u=3000796387,3766978808&fm=26&gp=0.jpg');
-INSERT INTO `user` VALUES (863, '王杰', '5412fa55', '18636547895', 'http://img4.imgtn.bdimg.com/it/u=356810679,291679453&fm=26&gp=0.jpg');
+INSERT INTO `user` VALUES (869, '唐心', '522991', '18325964789', 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=773579743,2271149885&fm=27&gp=0.jpg');
+INSERT INTO `user` VALUES (855, '陈林', '123456', '18360839064', 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3329523335,731969596&fm=27&gp=0.jpg');
+INSERT INTO `user` VALUES (865, '沈栋', '49154ae5', '18365419676', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=347837335,1617350328&fm=27&gp=0.jpg');
+INSERT INTO `user` VALUES (866, '流畅', '226632', '18562038772', 'http://img4.imgtn.bdimg.com/it/u=3223186911,2863052117&fm=26&gp=0.jpg');
+INSERT INTO `user` VALUES (863, '王杰', '5412fa55', '18636547895', 'https://img2.woyaogexing.com/2018/10/17/5c6048e1134f4915947ede65ebbde637!400x400.jpeg');
 
 -- ----------------------------
 -- View structure for version
