@@ -11,26 +11,18 @@
 
 <script>
 
- import axios from'axios'
+
 
   //<!--导入首页部分-->
-  import nav from './components/Home/nav'
-  import center from './components/Home/center'
-  import footer from './components/Home/footer'
-  //导入用户部分
-  import userlogin from './components/User/userLogin.vue'
-  import userregistry from './components/User/userRegistry.vue'
+  import Nav from './components/Home/Nav'
+  import Foot from './components/Home/Foot'
 
   export default {
     name: 'App',
     components: {
       // 首页
-      'home-header': nav,
-      'home-center': center,
-      'home-footer': footer,
-      //用户部分
-      'user-login': userlogin,
-      'user-registry': userregistry
+      'home-header': Nav,
+      'home-footer': Foot,
     },
     data() {
       return {data:[{}]}

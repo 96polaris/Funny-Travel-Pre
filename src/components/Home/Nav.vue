@@ -1,10 +1,11 @@
 <template>
   <!--//首页顶部-->
   <div class="nav">
-    <div class="nav-top"><span>您好，请<router-link to="/login"><a href="">登录</a></router-link></span>
-      <span><router-link to="/registry"><a href=""> 免费注册</a></router-link></span></div>
-
-    <h2>苏之旅</h2>
+    <div class="logo">
+      <img src="../../assets/logo.png"/>
+      <div class="nav-top"><span>您好，请<router-link to="/login"><a href="">登录</a></router-link></span>
+        <span><router-link to="/registry"><a href=""> 免费注册</a></router-link></span>
+    </div>
     <!--顶部导航栏-->
     <el-menu
       :default-active="activeIndex2"
@@ -24,12 +25,13 @@
       <el-menu-item index="7">伴旅</el-menu-item>
     </el-menu>
   </div>
+  </div>
 </template>
 
 <script>
 
   export default {
-    name: "nav",
+    name: "Nav",
     data() {
       return {
         activeIndex2: '1'
@@ -37,25 +39,7 @@
     },
     methods: {
       handleSelect(key, keyPath) {
-        console.log(key, keyPath);
       },
-
-      //获取热门线路
-      gethotRoute() {
-        axios({method: 'get', url: 'http://localhost:3000/manage/showHotRoute'}).then(function (result) {
-          console.log(result.data.data);
-        }, function (err) {
-          console.log(err);
-        })
-      },
-      //获取热门游记
-      gethotRoute() {
-        axios({method: 'get', url: 'http://localhost:3000/manage/showHotNote'}).then(function (result) {
-          console.log(result.data.data);
-        }, function (err) {
-          console.log(err);
-        })
-      }
     },
   }
 
@@ -63,11 +47,17 @@
 
 <style scoped>
 .nav-top{
-  margin: 0;
-  padding-left:20px;
-  background: #fafafa;
-  border-bottom: 1px solid #eee;
+  display: inline-block;
+  text-align: center;
+  margin-right: 20px;
   position: relative;
   z-index: 9999;
 }
+  .el-menu-item{
+    width: 14%;
+    text-align: center;
+  }
+.logo img{
+  height: 60px;
+     }
 </style>
