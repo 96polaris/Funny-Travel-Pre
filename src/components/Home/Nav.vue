@@ -4,7 +4,8 @@
     <div class="logo">
       <img src="../../assets/logo.png"/>
       <component :is="flag"></component>
-
+      <div class="nav-top"><span>您好，请<router-link to="/login">登录</router-link></span>
+           <span><router-link to="/registry"> 免费注册</router-link></span>
 
     </div>
     <!--顶部导航栏-->
@@ -26,6 +27,7 @@
       <el-menu-item index="7">伴旅</el-menu-item>
     </el-menu>
   </div>
+  </div>
 </template>
 
 <script>
@@ -35,29 +37,12 @@
     data() {
       return {
         activeIndex2: '1',
-        toChild:
-      }
-    },
-    mounted:function () {
-      var aa=sessionStorage.getItem('userName')
-        if(aa.length!=0){
-
       }
     },
     methods: {
       handleSelect(key, keyPath) {
       },
     },
-    components:{
-      'default':{
-        template:'<div class="nav-top"><span>您好，请<router-link to="/login">登录</router-link></span>\n' +
-        '        <span><router-link to="/registry"> 免费注册</router-link></span>'
-
-      },
-      'showuser':{
-
-      }
-    }
   }
 
 </script>
