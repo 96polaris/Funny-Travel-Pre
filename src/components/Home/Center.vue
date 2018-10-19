@@ -19,6 +19,7 @@
 </template>
 
 <script>
+  import axios from'axios'
   import Slide from './Slide.vue'
   import scenic from './Scenic.vue'
   import route from './Route.vue'

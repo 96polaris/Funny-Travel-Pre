@@ -4,7 +4,7 @@
     <home-header></home-header>
     <router-view></router-view>
     <!--页脚内容-->
-    <home-footer></home-footer>
+    <!--<home-footer></home-footer>-->
 
   </div>
 </template>

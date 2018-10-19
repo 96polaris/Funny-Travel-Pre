@@ -29,6 +29,7 @@
 </template>
 
 <script>
+  import axios from'axios'
   export default {
     name: "userLogin",
     data() {
@@ -48,12 +49,31 @@
           method: 'post',
           url: 'http://localhost:3000/users/login',
           data:{
-            userName:this.formLabelAlign.name,
-            userPwd:this.formLabelAlign.pwd
+            userName:_this.formLabelAlign.name,
+            userPwd:_this.formLabelAlign.pwd
           }
         }).then(function (result) {
           if(result.data.data!=0){
+            //用户名保存在sessionStorage中
+            sessionStorage.setItem('userName',result.data.data.userName)
+            sessionStorage.setItem('userPwd',result.data.data.userPwd)
+            sessionStorage.setItem('userId',result.data.data.userId)
+            sessionStorage.setItem('userPhone',result.data.data.userPhone)
+            //用户名存放vuex中
+            _this.$store.state.userName=result.data.data.userName
+            _this.$store.state.dispatch('userName',result.data.data.userName)
+            _this.$store.state.dispatch('userPwd',result.data.data.userPwd)
+            _this.$store.state.dispatch('userId',result.data.data.userId)
+            _this.$store.state.dispatch('userPhone',result.data.data.userPhone)
+            alert('登录成功，即将跳转到首页')
             _this.$router.push({path:'/'})
+          }else{
+            alert('登录失败，即将跳转到登录页')
+            _this.formLabelAlign.name=''
+            _this.formLabelAlign.pwd=''
+
+            _this.$router.push({path:'/login'})
+
           }
         }, function (err) {
           console.log(err);

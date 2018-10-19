@@ -1,17 +1,18 @@
-<template>
+<template id="mynav">
   <!--//首页顶部-->
   <div class="nav">
     <div class="logo">
       <img src="../../assets/logo.png"/>
-      <div class="nav-top"><span>您好，请<router-link to="/login"><a href="">登录</a></router-link></span>
-        <span><router-link to="/registry"><a href=""> 免费注册</a></router-link></span>
+      <component :is="flag"></component>
+
+
     </div>
     <!--顶部导航栏-->
     <el-menu
       :default-active="activeIndex2"
       class="el-menu-demo"
       mode="horizontal"
-      router="true"
+      router=true
       @select="handleSelect"
       background-color="#00c07b"
       text-color="#fff"
@@ -25,7 +26,6 @@
       <el-menu-item index="7">伴旅</el-menu-item>
     </el-menu>
   </div>
-  </div>
 </template>
 
 <script>
@@ -34,13 +34,30 @@
     name: "Nav",
     data() {
       return {
-        activeIndex2: '1'
+        activeIndex2: '1',
+        toChild:
+      }
+    },
+    mounted:function () {
+      var aa=sessionStorage.getItem('userName')
+        if(aa.length!=0){
+
       }
     },
     methods: {
       handleSelect(key, keyPath) {
       },
     },
+    components:{
+      'default':{
+        template:'<div class="nav-top"><span>您好，请<router-link to="/login">登录</router-link></span>\n' +
+        '        <span><router-link to="/registry"> 免费注册</router-link></span>'
+
+      },
+      'showuser':{
+
+      }
+    }
   }
 
 </script>

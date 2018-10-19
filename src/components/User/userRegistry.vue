@@ -24,7 +24,7 @@
             <el-input type="password" v-model="ruleForm2.checkPass" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
+            <el-button type="primary" @click="submitForm()">提交</el-button>
             <el-button @click="resetForm('ruleForm2')">重置</el-button>
           </el-form-item>
         </el-form>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+  import axios from'axios'
   export default {
     name: "userRegistry",
     data() {
@@ -94,20 +95,23 @@
       };
     },
     methods: {
-      submitForm(formName) {
+      submitForm() {
         let _this=this
         axios({
           method: 'post',
           url: 'http://localhost:3000/users/addUser',
           data:{
-            userName:this.ruleForm2.name,
-            userPwd:this.ruleForm2.pass,
-            userPhone:this.ruleForm2.phone
+            userName:_this.ruleForm2.name,
+            userPwd:_this.ruleForm2.pass,
+            userPhone:_this.ruleForm2.phone
           }
         }).then(function (result) {
             if(result.data.data!=0){
               alert('注册成功，即将跳转到登录页面')
-              this.$router.push({path:'/login'})
+              _this.$router.push({path:'/login'})
+            }else{
+              alert('注册失败，即将重新跳转到注册页面')
+              _this.$router.push({path:'/registry'})
             }
           }
         , function (err) {
@@ -124,7 +128,7 @@
         // });
       },
       resetForm(formName) {
-        this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields();
       }
     }
   }

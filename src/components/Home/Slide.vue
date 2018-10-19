@@ -2,11 +2,11 @@
     <div id="app">
       <el-row :gutter="0">
         <el-carousel :interval="2000" type="card" arrow="never" height="360px" >
-          <el-carousel-item v-for="item in dataimg" :key="item">
+          <el-carousel-item v-for="(img,index) in imageList" :key="index">
             <div class="grid-content">
               <el-col :md="24" :offset="0">
                 <div class="img">
-                  <img :src="item.src" height="350px">
+                  <img :src="img.src" height="350px">
                 </div>
               </el-col>
             </div>
@@ -21,7 +21,7 @@
         name: "Slide",
       data(){
           return{
-            dataimg: [
+            imageList: [
               {
                 src: require('../../assets/slideImage/slide1.jpg'),
 
