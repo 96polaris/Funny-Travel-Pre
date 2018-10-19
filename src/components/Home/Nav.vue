@@ -28,9 +28,9 @@
         <el-menu-item index="/">首页</el-menu-item>
         <el-menu-item index="2">景点推荐</el-menu-item>
         <el-menu-item index="3">线路推荐</el-menu-item>
-        <el-menu-item index="4">游记</el-menu-item>
+        <el-menu-item index="/youji">游记</el-menu-item>
         <el-menu-item index="5">出行方式</el-menu-item>
-        <el-menu-item index="6">个人中心</el-menu-item>
+        <el-menu-item index="/user">个人中心</el-menu-item>
         <el-menu-item index="7">伴旅</el-menu-item>
       </el-menu>
     </div>
@@ -88,4 +88,11 @@
     color: red;
     cursor: pointer;
   }
+ .el-menu-demo el-menu--horizontal el-menu {
+   height: 53px;
+ }
+  .el-menu-item{
+     height: 42px;
+    line-height: 42px;
+   }
 </style>

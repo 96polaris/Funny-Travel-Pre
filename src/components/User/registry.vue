@@ -1,6 +1,6 @@
 <template>
   <div id="forget">
-    <el-steps :active="active+1" class="step" finish-status="success" simple style="margin-top: 20px">
+    <el-steps :active="active" class="step" finish-status="success" simple style="margin-top: 20px">
       <el-step title="验证手机号"></el-step>
       <el-step title="用户名及密码设置"></el-step>
       <el-step title="完成"></el-step>
@@ -13,12 +13,14 @@
         <el-input class='checkCode' v-model="checkmsg" placeholder="请输入验证码"></el-input>
         <el-button type="primary"  @click="getmessage">获取验证码</el-button>
         <br><br>
+        <el-button type="primary"  @click="check">确定</el-button>
+        <br><br>
 
       </div>
       <div id="check2" v-if="active===1">
         <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
           <el-form-item  prop="name" label="用户名">
-            <el-input type="password" v-model="ruleForm2.pass" autocomplete="off"placeholder="请输入用户名"></el-input>
+            <el-input  v-model="ruleForm2.name" autocomplete="off"placeholder="请输入用户名"></el-input>
           </el-form-item>
           <el-form-item  prop="pass" label="输入密码">
             <el-input type="password" v-model="ruleForm2.pass" autocomplete="off"placeholder="请输入密码"></el-input>
@@ -90,36 +92,33 @@
           this.code += Math.floor(Math.random()*10);
         }
       },
-          // axios.get('/proxy?mobile=' + this.mobile + '&tpl_id=107464&tpl_value=%23code%23%3D' +
-          // this.Num + '&key=18fe7a1509f021d5af8849af2d6a370c')
-          //   .then((res)=>{
-          //     console.log(res)
-          //   }).catch(err=>{console.log(err)})
- // url:'http://v.juhe.cn/sms/send?mobile='+this.phone+'&tpl_id=&tpl_value='+this.code+ '&key='
+      check(){
+        let _this=this
+        axios({
+          method:'get',
+          url:'http://v.juhe.cn/sms/send?mobile='+_this.phone+'&tpl_id=108216&tpl_value=%23code%23%3d'+_this.code+ '&key=aca2c573f614de2336213f17d3b0f51f'
+        }).then(function () {
+          if (_this.checkmsg==_this.code) {
+          }else{
+            alert('短信验证码错误')
+            this.checkmsg=''
+          }
+        })
+      },
       next() {
-        if(this.active==1){
-          axios({
-            method:'get',
-            url:'http://v.juhe.cn/sms/send?mobile='+this.phone+'&tpl_id=&tpl_value='+this.code+ '&key='
-          }).then(function () {
-            if (this.checkmsg==this.code) {
-              this.active++
-            }else{
-              alert('短信验证码错误，请重新注册')
-              this.checkmsg=''
-            }
-          })
-        }else if (this.active++ > 2) this.active = 0;
+         if (this.active++ > 2)
+           this.active = 0;
       },
       tologin() {
+        alert('注册成功，即将跳转到')
         this.$router.push({path: '/login'})
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('修改成功!');
+            alert('注册成功!');
           } else {
-            console.log('修改失败!!');
+            console.log('注册失败!!');
             return false;
           }
         });

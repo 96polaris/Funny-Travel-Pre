@@ -78,7 +78,7 @@
   }
 .scenicone{
   width: 300px;
-  height: 200px;
+  height: 250px;
   float: left;
   position: relative;
   margin: 0 auto;
@@ -109,10 +109,10 @@ width:130px;
     padding-bottom: 0;
     height: 10px;
   }
-  .line{
-    height: 10px;
-    color: red;
-  }
+  /*.line{*/
+    /*height: 10px;*/
+    /*color: red;*/
+  /*}*/
   .btn{
     width: 100%;
     margin: 0 auto;
