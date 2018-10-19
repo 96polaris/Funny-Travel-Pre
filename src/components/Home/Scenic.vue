@@ -6,7 +6,7 @@
 
     <div class="scenic">
       <div v-for="(value,index) in scenic" v-if="index<num">
-          <el-card class="scenicone" v-model="sindex" @click="getscenicId(index)">
+          <el-card class="scenicone" v-model="sindex" @click="getscenicId(value.scenicId)">
             <img :src="value.scenicImage">
             <h4>{{value.scenicName}}</h4>
             <h5>{{value.scenicLevel}}</h5>
@@ -47,8 +47,7 @@
     },
     methods:{
       getscenicId(index){
-        _this.scenic[index].scenicId
-        this.$route.push({path:''})
+        this.$router.push({path:`/scenicdetails/${index}`})
       },
       more(){
         this.num+=3;

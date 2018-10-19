@@ -2,8 +2,8 @@
   <div>
     <h2>看游记</h2>
     <div class="note">
-      <div v-for="(value,index) in note" v-if="index<num">
-        <div class="noteone">
+      <div v-for="(value,index) in note" v-if="index<num" >
+        <div class="noteone" @click="getnoteId(value.noteId)">
           <img :src=value.travelNoteImage>
           <h3>{{value.travelTitle}}</h3>
 
@@ -44,6 +44,9 @@
         })
       },
       methods:{
+          getnoteId(index){
+            this.$router.push({path:`/youji/youjixq/${index}`})
+          },
         more(){
           this.num+=3;
         },
