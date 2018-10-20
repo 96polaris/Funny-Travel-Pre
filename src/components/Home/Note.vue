@@ -46,7 +46,6 @@
       methods:{
           getnoteId(index){
             this.$router.push({path:`/youji/youjixq/${index}`})
-            console.log(index)
           },
         more(){
           this.num+=3;

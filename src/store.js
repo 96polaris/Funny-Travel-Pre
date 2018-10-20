@@ -8,7 +8,7 @@ export default new Vuex.Store({
     //   userName:'',
     //   userPhone:'',
     //   userPwd:'',
-    //   userId:''
+      userId:'',
     // }
     userName:''
 

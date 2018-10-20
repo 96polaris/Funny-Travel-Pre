@@ -3,13 +3,13 @@
   <div class="nav">
     <div class="logo">
       <img src="../../assets/logo.png"/>
-      <div class="login" v-if="this.$store.state.userName==''">
+      <div class="login" v-if="userInfo==null">
         <div class="nav-top"><span>您好，请<router-link to="/login">登录</router-link></span>
           <span><router-link to="/registry"> 免费注册</router-link></span>
         </div>
       </div>
 
-      <div class="login" v-else="this.$store.state.userName!=''">
+      <div class="login" v-else="userInfo!=null">
         <div class="nav-top" ><span>您好，欢迎<span>{{userInfo}}</span></span>
           <span @click="clear" class="btn">注销</span>
         </div>
@@ -50,12 +50,21 @@
       },
       clear(){
        this.$store.state.userName=''
+        sessionStorage.clear()
+        this.$router.push({path:'/login'})
 
       }
     },
+    watch: {
+      '$route' (to, from) {
+        this.$router.go(0);
+
+
+      }},
     computed:{
       userInfo(){
-        return this.$store.state.userName
+        return sessionStorage.getItem('userName')
+        console.log(sessionStorage.getItem('userName'));
       }
     }
 
@@ -88,11 +97,4 @@
     color: red;
     cursor: pointer;
   }
- .el-menu-demo el-menu--horizontal el-menu {
-   height: 53px;
- }
-  .el-menu-item{
-     height: 42px;
-    line-height: 42px;
-   }
 </style>

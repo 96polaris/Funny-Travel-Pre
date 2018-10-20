@@ -55,10 +55,10 @@
         }).then(function (result) {
           if(result.data.data!=0){
             //用户名保存在sessionStorage中
-            // sessionStorage.setItem('userName',result.data.data.userName)
-            // sessionStorage.setItem('userPwd',result.data.data.userPwd)
-            // sessionStorage.setItem('userId',result.data.data.userId)
-            // sessionStorage.setItem('userPhone',result.data.data.userPhone)
+            sessionStorage.setItem('userName',result.data.data.userName)
+            sessionStorage.setItem('userPwd',result.data.data.userPwd)
+            sessionStorage.setItem('userId',result.data.data.userId)
+            sessionStorage.setItem('userPhone',result.data.data.userPhone)
             //用户名存放vuex中
             // _this.$store.state.userName=''
             _this.$store.state.userName=result.data.data.userName

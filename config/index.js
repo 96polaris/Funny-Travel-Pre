@@ -10,18 +10,19 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
-      "/proxy": {
-        target: "http://localhost:3000",//目标地址
-        "changeOrigin": true,//跨域访问设置，true代表跨域
-        "pathRewrite": {//路径改写规则
-          "^/proxy": ""  //以/proxy/为开头的改写为''
-        },
-        "headers": {//设置请求头伪装成手机端的访问
-          "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Mobile Safari/537.36"
-        }
-      }
-    },
+    proxyTable:{},
+    // proxyTable: {
+    //   "/proxy": {
+    //     target: "http://localhost:3000",//目标地址
+    //     "changeOrigin": true,//跨域访问设置，true代表跨域
+    //     "pathRewrite": {//路径改写规则
+    //       "^/proxy": ""  //以/proxy/为开头的改写为''
+    //     },
+    //     "headers": {//设置请求头伪装成手机端的访问
+    //       "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Mobile Safari/537.36"
+    //     }
+    //   }
+    // },
 
 
     // Various Dev Server settings

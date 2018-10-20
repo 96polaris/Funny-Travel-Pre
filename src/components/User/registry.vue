@@ -1,19 +1,17 @@
 <template>
   <div id="forget">
-    <el-steps :active="active" class="step" finish-status="success" simple style="margin-top: 20px">
+    <el-steps :active="active+1" class="step" finish-status="success" simple style="margin-top: 20px">
       <el-step title="验证手机号"></el-step>
       <el-step title="用户名及密码设置"></el-step>
       <el-step title="完成"></el-step>
     </el-steps>
     <div class="content" >
       <div id="check1" v-if="active===0">
-        <el-input class='code' v-model="phone"  placeholder="请输入手机号"></el-input>
+        <el-input class='code' v-model="ruleForm2.phone"  placeholder="请输入手机号"></el-input>
         <br>
         <br>
         <el-input class='checkCode' v-model="checkmsg" placeholder="请输入验证码"></el-input>
         <el-button type="primary"  @click="getmessage">获取验证码</el-button>
-        <br><br>
-        <el-button type="primary"  @click="check">确定</el-button>
         <br><br>
 
       </div>
@@ -27,10 +25,6 @@
           </el-form-item>
           <el-form-item  prop="checkPass" label="确认密码">
             <el-input type="password" v-model="ruleForm2.checkPass" autocomplete="off"placeholder="请确认密码"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="success" @click="submitForm('ruleForm2')">提交</el-button>
-            <el-button @click="resetForm('ruleForm2')">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -68,10 +62,11 @@
       };
       return {
         active: 0,
-        phone:'',
+
         checkmsg:'',
         code:'',
         ruleForm2: {
+          phone:'',
           name:'',
           pass: '',
           checkPass: '',
@@ -88,37 +83,63 @@
     },
     methods: {
       getmessage(){
+        let _this=this
         for(let i =0;i<6;i++){
           this.code += Math.floor(Math.random()*10);
+          console.log(this.code);
         }
-      },
-      check(){
-        let _this=this
-        axios({
-          method:'get',
-          url:'http://v.juhe.cn/sms/send?mobile='+_this.phone+'&tpl_id=108216&tpl_value=%23code%23%3d'+_this.code+ '&key=aca2c573f614de2336213f17d3b0f51f'
-        }).then(function () {
-          if (_this.checkmsg==_this.code) {
-          }else{
-            alert('短信验证码错误')
-            this.checkmsg=''
-          }
-        })
+        // axios({
+        //   method:'get',
+        //   url:'http://v.juhe.cn/sms/send?mobile='+_this.phone+'&tpl_id=108216&tpl_value=%23code%23%3D'+_this.code+ '&key=aca2c573f614de2336213f17d3b0f51f'
+        // }).then(function () {
+        // })
       },
       next() {
-         if (this.active++ > 2)
-           this.active = 0;
+        let _this=this
+        if(this.active==0){
+            if (this.checkmsg==this.code) {
+              this.active++
+            }else{
+              alert('短信验证码错误')
+              this.checkmsg=''
+            }
+        }
+        else if(this.active==1){
+          axios({
+            method: 'post',
+            url: 'http://localhost:3000/users/addUser',
+            data:{
+              userName:_this.ruleForm2.name,
+              userPwd:_this.ruleForm2.pass,
+              userPhone:_this.ruleForm2.phone
+            }
+          }).then(function (result) {
+              if(result.data.data==1){
+                console.log(result.data.data);
+                _this.active++
+                // alert('注册成功，即将跳转到登录页面')
+                // _this.$router.push({path:'/login'})
+              }else{
+                alert('注册失败，用户名已存在，即将重新跳转到注册页面')
+                _this.$router.push({path:'/registry'})
+              }
+            }
+            , function (err) {
+              console.log(err);
+            })
+
+        }
+        else if (this.active++ > 2) this.active = 0;
       },
       tologin() {
-        alert('注册成功，即将跳转到')
         this.$router.push({path: '/login'})
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('注册成功!');
+            alert('修改成功!');
           } else {
-            console.log('注册失败!!');
+            console.log('修改失败!!');
             return false;
           }
         });
