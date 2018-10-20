@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h2>玩景点</h2>
     <h5>更多>></h5>
     <hr class="line">
@@ -77,7 +77,7 @@
     /*border: 1px solid red;*/
   }
 .scenicone{
-  width: 300px;
+  width: 260px;
   height: 200px;
   float: left;
   position: relative;
@@ -89,8 +89,9 @@
   /*background-color: pink;*/
      }
 img{
-  width: 250px;
+  width: 220px;
   height: 150px;
+  margin: 0 auto;
 }
 img:hover{
   opacity: 0.6;
@@ -115,6 +116,10 @@ width:130px;
   }
   .btn{
     width: 100%;
+    margin: 0 auto;
+  }
+  .container{
+    width: 90%;
     margin: 0 auto;
   }
 </style>

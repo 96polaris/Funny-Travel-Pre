@@ -97,4 +97,11 @@
     color: red;
     cursor: pointer;
   }
+  .el-menu-demo el-menu--horizontal el-menu{
+    height: 50px;
+  }
+  .el-menu-item{
+    height: 50px;
+    line-height: 50px;
+  }
 </style>
