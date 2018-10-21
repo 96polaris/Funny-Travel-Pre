@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div class="container">
     <h2>找线路</h2>
+    <hr>
     <div class="route">
       <div v-for="(value,index) in route" v-if="index<num" >
         <div class="routeone">
@@ -84,6 +85,9 @@
     height: 200px;
     float: left;
   }
+  img:hover{
+    opacity: 0.6;
+  }
   .content{
     text-indent: 2em;
     padding-left: 250px;
@@ -91,8 +95,16 @@
   h3{
     text-align: center;
   }
+  h3:hover{
+    color: red;
+    font-weight:bold;
+  }
   .btn{
     width: 100%;
+    margin: 0 auto;
+  }
+  .container{
+    width: 90%;
     margin: 0 auto;
   }
 </style>

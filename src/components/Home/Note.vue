@@ -1,9 +1,10 @@
 <template>
-  <div>
+  <div class="container">
     <h2>看游记</h2>
+    <hr>
     <div class="note">
-      <div v-for="(value,index) in note" v-if="index<num">
-        <div class="noteone">
+      <div v-for="(value,index) in note" v-if="index<num" >
+        <div class="noteone" @click="getnoteId(value.travelNoteId)">
           <img :src=value.travelNoteImage>
           <h3>{{value.travelTitle}}</h3>
 
@@ -44,11 +45,14 @@
         })
       },
       methods:{
+          getnoteId(index){
+            this.$router.push({path:`/youji/youjixq/${index}`})
+          },
         more(){
           this.num+=3;
         },
         back(){
-          this.num=6
+          this.num=3
         }
       }
     }
@@ -86,7 +90,9 @@
     height: 200px;
     float: left;
   }
-
+img:hover{
+  opacity: 0.6;
+}
   .content{
     height: 100px;
     padding-left: 250px;
@@ -104,8 +110,16 @@
   h3{
     text-align: center;
   }
+  h3:hover{
+    color: red;
+    font-weight: bold;
+  }
   .btn{
     width: 100%;
+    margin: 0 auto;
+  }
+  .container{
+    width: 90%;
     margin: 0 auto;
   }
 </style>

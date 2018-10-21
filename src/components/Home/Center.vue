@@ -40,5 +40,6 @@
 <style scoped>
 div{
   display: block;
+  width: 100%;
 }
 </style>

@@ -7,7 +7,7 @@
     </el-steps>
     <div class="content" >
       <div id="check1" v-if="active===0">
-        <el-input class='code' v-model="phone"  placeholder="请输入手机号"></el-input>
+        <el-input class='code' v-model="ruleForm2.phone"  placeholder="请输入手机号"></el-input>
         <br>
         <br>
         <el-input class='checkCode' v-model="checkmsg" placeholder="请输入验证码"></el-input>
@@ -18,17 +18,13 @@
       <div id="check2" v-if="active===1">
         <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
           <el-form-item  prop="name" label="用户名">
-            <el-input type="password" v-model="ruleForm2.pass" autocomplete="off"placeholder="请输入用户名"></el-input>
+            <el-input  v-model="ruleForm2.name" autocomplete="off"placeholder="请输入用户名"></el-input>
           </el-form-item>
           <el-form-item  prop="pass" label="输入密码">
             <el-input type="password" v-model="ruleForm2.pass" autocomplete="off"placeholder="请输入密码"></el-input>
           </el-form-item>
           <el-form-item  prop="checkPass" label="确认密码">
             <el-input type="password" v-model="ruleForm2.checkPass" autocomplete="off"placeholder="请确认密码"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="success" @click="submitForm('ruleForm2')">提交</el-button>
-            <el-button @click="resetForm('ruleForm2')">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -66,10 +62,11 @@
       };
       return {
         active: 0,
-        phone:'',
+
         checkmsg:'',
         code:'',
         ruleForm2: {
+          phone:'',
           name:'',
           pass: '',
           checkPass: '',
@@ -86,30 +83,53 @@
     },
     methods: {
       getmessage(){
+        let _this=this
         for(let i =0;i<6;i++){
           this.code += Math.floor(Math.random()*10);
+          console.log(this.code);
         }
+        // axios({
+        //   method:'get',
+        //   url:'http://v.juhe.cn/sms/send?mobile='+_this.phone+'&tpl_id=108216&tpl_value=%23code%23%3D'+_this.code+ '&key=aca2c573f614de2336213f17d3b0f51f'
+        // }).then(function () {
+        // })
       },
-          // axios.get('/proxy?mobile=' + this.mobile + '&tpl_id=107464&tpl_value=%23code%23%3D' +
-          // this.Num + '&key=18fe7a1509f021d5af8849af2d6a370c')
-          //   .then((res)=>{
-          //     console.log(res)
-          //   }).catch(err=>{console.log(err)})
- // url:'http://v.juhe.cn/sms/send?mobile='+this.phone+'&tpl_id=&tpl_value='+this.code+ '&key='
       next() {
-        if(this.active==1){
-          axios({
-            method:'get',
-            url:'http://v.juhe.cn/sms/send?mobile='+this.phone+'&tpl_id=&tpl_value='+this.code+ '&key='
-          }).then(function () {
+        let _this=this
+        if(this.active==0){
             if (this.checkmsg==this.code) {
               this.active++
             }else{
-              alert('短信验证码错误，请重新注册')
+              alert('短信验证码错误')
               this.checkmsg=''
             }
-          })
-        }else if (this.active++ > 2) this.active = 0;
+        }
+        else if(this.active==1){
+          axios({
+            method: 'post',
+            url: 'http://localhost:3000/users/addUser',
+            data:{
+              userName:_this.ruleForm2.name,
+              userPwd:_this.ruleForm2.pass,
+              userPhone:_this.ruleForm2.phone
+            }
+          }).then(function (result) {
+              if(result.data.data==1){
+                console.log(result.data.data);
+                _this.active++
+                // alert('注册成功，即将跳转到登录页面')
+                // _this.$router.push({path:'/login'})
+              }else{
+                alert('注册失败，用户名已存在，即将重新跳转到注册页面')
+                _this.$router.push({path:'/registry'})
+              }
+            }
+            , function (err) {
+              console.log(err);
+            })
+
+        }
+        else if (this.active++ > 2) this.active = 0;
       },
       tologin() {
         this.$router.push({path: '/login'})

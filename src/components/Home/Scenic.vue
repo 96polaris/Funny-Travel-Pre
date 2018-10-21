@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="container">
     <h2>玩景点</h2>
     <h5>更多>></h5>
     <hr class="line">
 
     <div class="scenic">
       <div v-for="(value,index) in scenic" v-if="index<num">
-          <el-card class="scenicone" v-model="sindex" @click="getscenicId(index)">
+          <el-card class="scenicone" v-model="sindex" @click="getscenicId(value.scenicId)">
             <img :src="value.scenicImage">
             <h4>{{value.scenicName}}</h4>
             <h5>{{value.scenicLevel}}</h5>
@@ -47,8 +47,7 @@
     },
     methods:{
       getscenicId(index){
-        _this.scenic[index].scenicId
-        this.$route.push({path:''})
+        this.$router.push({path:`/scenicdetails/${index}`})
       },
       more(){
         this.num+=3;
@@ -78,7 +77,7 @@
     /*border: 1px solid red;*/
   }
 .scenicone{
-  width: 300px;
+  width: 260px;
   height: 200px;
   float: left;
   position: relative;
@@ -90,8 +89,9 @@
   /*background-color: pink;*/
      }
 img{
-  width: 250px;
+  width: 220px;
   height: 150px;
+  margin: 0 auto;
 }
 img:hover{
   opacity: 0.6;
@@ -116,6 +116,10 @@ width:130px;
   }
   .btn{
     width: 100%;
+    margin: 0 auto;
+  }
+  .container{
+    width: 90%;
     margin: 0 auto;
   }
 </style>

@@ -7,6 +7,7 @@
               <el-col :md="24" :offset="0">
                 <div class="img">
                   <img :src="img.src" height="350px">
+
                 </div>
               </el-col>
             </div>
@@ -45,9 +46,9 @@
 
 <style scoped>
   .img{
-    width: 80%;
-    height: 30%;
-    margin: 0 auto;
+    /*width: 80%;*/
+    /*height: 30%;*/
+    /*margin: 0 auto;*/
   }
 
   #app {
@@ -56,12 +57,15 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    width: 100%;
+    /*width: 80%;*/
     height: 30%;
+    /*margin: 0 auto;*/
     position: relative;
-    margin-left: 0.1%;
-    margin-top: 0;
+    /*margin-left: 0.1%;*/
+    margin-top: 20px;
     z-index:1;
   }
-
+  .el-carousel__mask{
+    width: 250px;
+  }
 </style>
