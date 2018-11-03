@@ -84,10 +84,12 @@
       getmessage(){
         let _this=this
         this.code=''
+        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
         console.log(_this.ruleForm2.phone);
-        if(_this.ruleForm2.phone.length<11){
-          alert('手机号格式错误')
-        }else{
+        if(!reg.test(_this.ruleForm2.phone)){
+          this.$message.error('手机号格式有误!');
+        }
+        else{
           axios({
             method: 'post',
             url: 'http://localhost:3000/users/checkuser',
