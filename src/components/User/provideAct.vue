@@ -88,6 +88,9 @@
           // }
         })
       },
+      toAct(index){
+        this.$router.push({path:`/activitys/${index}`})
+      }
     },
     mounted:function () {
       let _this = this
