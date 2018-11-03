@@ -1,24 +1,24 @@
 <template>
-<div>
-  <!--轮播图-->
-  <div id="app">
-    <el-row :gutter="0">
-      <el-carousel :interval="2000" type="card" arrow="never" height="360px" >
-        <el-carousel-item v-for="(item,index) in dataimg" :key="index">
-          <div class="grid-content">
-            <el-col :md="24" :offset="0">
-              <div class="img">
-                <img :src="item.src" height="350px">
-              </div>
-            </el-col>
-          </div>
-        </el-carousel-item>
-      </el-carousel>
-    </el-row>
-  </div>
+<div id="large">
+    <img style="width: 100%;height: 300px;"src="../../assets/activityImg/06.jpg" alt="">
+
   <!--主要信息-->
   <div id="main">
-      <el-form ref="form" label-width="80px" size="mini">
+    <h3>发布活动</h3>
+    <hr style="border: 2px brown solid">
+      <el-form ref="form" label-width="80px" size="mini" id="inner">
+        <div style="margin-left: 60px; border: #c1e2b3 solid 1px;width: 150px;height: 150px;">
+          <img  style="":src="pic" alt="">
+        </div>
+
+        <!--<span class="glyphicon glyphicon-plus" aria-hidden="true"></span><br>-->
+        <el-tag style="margin-left: 40px">提示：点击上方方框上传图片</el-tag>
+        <input  id="provide" type="file" name="avatar"
+               @change="changeImage($event)"
+               accept="image/gif,image/jpeg,image/jpg,image/png"
+               ref="avatarInput"
+               multiple><br/>
+
         <el-form-item label="活动主题">
           <el-col :span="12">
           <el-input v-model="actTitle"></el-input>
@@ -29,12 +29,12 @@
             <el-input v-model="actDays"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="活动开始时间">
+        <el-form-item label="开始时间">
         <el-col :span="6">
           <el-date-picker type="date" placeholder="选择日期" v-model="beginTime" style="width: 100%;"></el-date-picker>
         </el-col>
       </el-form-item>
-        <el-form-item label="活动结束时间">
+        <el-form-item label="结束时间">
           <el-col :span="6">
             <el-date-picker type="date" placeholder="选择日期" v-model="endTime" style="width: 100%;"></el-date-picker>
           </el-col>
@@ -55,7 +55,7 @@
           </el-col>
         </el-form-item>
         <el-form-item label="活动说明">
-          <el-col :span="12">
+          <el-col :span="20" >
             <el-input v-model="actIntroduce"></el-input>
           </el-col>
         </el-form-item>
@@ -85,62 +85,96 @@
           telNum:'',
           actDays:'',
           money:'',
-          actIntroduce:''
+          actIntroduce:'',
+          upath:'',
+
+          pic:''
         }
       },
       methods: {
         addAct() {
-          if (this.actTitle==''||this.actDays==''||this.beginTime==''||this.endTime==''||this.personNum==''||this.money==''||this.telNum==''||this.actIntroduce=='') {
+          var zipFormData = new FormData();
+          // console.log(this.upath[0]);
+          zipFormData.append('activityTitle', this.actTitle)
+          zipFormData.append('activityDays', this.actDays)
+          zipFormData.append('beginTime', this.beginTime.toLocaleString())
+          zipFormData.append('endTime', this.endTime.toLocaleString())
+          zipFormData.append('personNum', this.personNum)
+          zipFormData.append('money', this.money)
+          zipFormData.append('telNum', this.telNum)
+          zipFormData.append('activityIntroduce', this.actIntroduce)
+          zipFormData.append('user_userId', sessionStorage.getItem("userId"))
+          zipFormData.append('actImg', this.upath[0])
+          let config = {headers: {'Content-Type': 'multipart/form-data'}};
+          if(this.upath==''||this.activityTitle==''||this.actDays==''||this.beginTime==''||this.endTime==''||this.personNum==''||this.money==''||this.telNum==''||this.actIntroduce==''){
             alert('请输入完整信息')
-          } else {
-            axios.post('http://localhost:3000/activity/addActivity', {
-              activityTitle: this.actTitle,
-              activityDays: this.actDays,
-              beginTime: this.beginTime.toLocaleString(),
-              endTime: this.endTime.toLocaleString(),
-              personNum: this.personNum,
-              money: this.money,
-              telNum: this.telNum,
-              activityIntroduce: this.actIntroduce,
-              user_userId: 1,
-            }).then((response) => {
-              console.log()
-              alert('发布成功！')
-            }).catch((err) => {
-              alert('发布失败')
-              console.log(err)
-            })
+          }  else{
+            axios.post('http://localhost:3000/activity/addActivity', zipFormData, config)
+              .then(function (result) {
+                console.log(result.data)
+              })
+            alert("活动发布成功")
+            this.$router.push({path:'/activity'})
           }
-        }
+        },
+        //选中文件后，将文件保存到实例的变量中
+        changeImage(e) {
+
+            this.upath = e.target.files;
+            console.log(this.upath);
+            let $target = e.target || e.srcElement
+            let file = $target.files[0]
+            var reader = new FileReader()
+            reader.onload = (data) => {
+              let res = data.target || data.srcElement
+              this.pic = res.result
+            }
+            reader.readAsDataURL(file)
+
+
+          }
       }
-    }
+}
 </script>
 
 <style scoped>
-.form-group{
-  width: 700px;
-}
-  #fm{
-    margin-top: 20px;
-    margin-left: 200px;
-  }
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  width: 100%;
-  height: 30%;
-  position: relative;
-  margin-left: 0.1%;
-  margin-top: 0;
-  z-index:1;
-}
 #main{
   width: 1200px;
   margin: 0 auto;
-  border: 1px solid black;
+  border: 1px solid transparent;
+  /*text-align: center;*/
+  /*background-color: green;*/
+  /*background-image: url("../../assets/activityImg/08.jpg");*/
 }
-  #addBtn{margin-left: 200px}
+#inner{
+
+  width: 800px;
+  border: 1px solid burlywood;
+  margin: 0 auto;
+background-color: white;
+  /*background-image: url("../../assets/activityImg/010.jpg");*/
+}
+  #addBtn{margin-left: 680px;margin-top: 10px}
+  #provide{
+    width: 150px;
+    height: 150px;
+    opacity: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: -150px;
+    z-index: 999;
+    margin-left: 60px;
+    /*font-size: 130px;*/
+  }
+  img{
+    width: 150px;
+    height: 150px;
+    display: flex;
+    overflow: hidden;
+  }
+  #large{
+    width: 100%;
+    height: 100%;
+    background-color: #eeee;
+  }
 </style>

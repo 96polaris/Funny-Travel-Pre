@@ -1,13 +1,12 @@
 <template>
     <div id="app">
       <el-row :gutter="0">
-        <el-carousel :interval="2000" type="card" arrow="never" height="360px" >
+        <el-carousel :interval="2000" type="card" arrow="never" height="450px" >
           <el-carousel-item v-for="(img,index) in imageList" :key="index">
             <div class="grid-content">
               <el-col :md="24" :offset="0">
                 <div class="img">
-                  <img :src="img.src" height="350px">
-
+                  <img :src="img.src" height="600px">
                 </div>
               </el-col>
             </div>
@@ -58,7 +57,7 @@
     text-align: center;
     color: #2c3e50;
     /*width: 80%;*/
-    height: 30%;
+    height: 40%;
     /*margin: 0 auto;*/
     position: relative;
     /*margin-left: 0.1%;*/

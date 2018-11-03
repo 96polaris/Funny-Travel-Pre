@@ -16,53 +16,85 @@
         </el-carousel>
       </el-row>
     </div>
+
+
+    <div style="width: 90%;margin:  0 auto">
+      <!--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>-->
+      <span  style="font-size: 28px;color:#8a6d3b;margin-left: 10px;margin-left: 70px">
+        全部活动
+      </span>
+      <hr style="color: black;border: 2px solid rosybrown">
+    </div>
+
     <!--主体部分-->
     <div id="main">
-      <!--活动列表-->
       <div id="actShow">
-        <div id="actInner" v-for="(item,index) in activitys"v-if="index<num">
-          <div id="headPic"><img :src="headPic" alt=""></div>
-          <!--<p>发布人：{{item.user_userId}}</p>-->
-          <p>发布人：{{userName}}</p>
-          <h4>活动主题：{{item.activityTitle}}</h4>
-          <p>活动时长：{{item.activityDays}}</p>
-          <p>活动开始时间：{{item.beginTime.substr(0,10)}}</p>
-          <p>活动结束时间：{{item.endTime.substr(0,10)}}</p>
-          <p>联系电话：{{item.telNum}}</p>
-          <p id="myp">活动说明：{{item.activityIntroduce}}</p>
-          <div class="nav nav-pills">
-            <!--<router-link :to="'/user/'+ $route.params.id + '/edit'">编辑用户信息</router-link>-->
-            <router-link id="showBtn" tag="li" active-class="active" role="presentation" :to="`/activitys/${item.activityId}`" exact><a>查看此活动详情</a></router-link>
+        <div>
+          <!--<span style="font-size: 28px;color: #8a6d3b;margin-top: 10px">点击可以查看活动详情并加入活动哦</span>-->
+        </div>
+        <div id="actInner"v-for="item in myActData1"@click="getDetails">
+
+          <div id="img">
+             <img :src="item.actImg" alt="">
+            <router-link :to="`/activitys/${item.activityId}`">       <div id="imgInner">
+
+              <h4><p id="myp">活动说明：{{item.activityIntroduce}}</p></h4>
+              <h4><p>活动主题：{{item.activityTitle}}</p></h4>
+              <h4><p>开始时间：{{item.beginTime.substr(0,10)}}</p></h4>
+              <h4><p>结束时间：{{item.endTime.substr(0,10)}}</p></h4>
+            </div></router-link>
+          </div>
+
+          <div id="word1">
+            <p>活动主题：{{item.activityTitle}}</p>
+            <p>时间：{{item.beginTime.substr(0,10)}}-{{item.endTime.substr(0,10)}}</p>
           </div>
         </div>
-      </div>
 
-      <!--发布活动按钮-->
-      <div class="nav nav-pills">
-        <!--<router-link tag="li" active-class="active" role="presentation" to="/activitys/addAct" exact><a>发布活动</a></router-link>-->
-        <button id="addBtn" type="button" class="btn btn-primary"@click="addAct">发布活动</button>
       </div>
-      <!--分页-->
-      <nav id="nav" aria-label="Page navigation">
-        <ul class="pagination">
-          <li>
-            <a href="#" aria-label="Previous">
-              <span aria-hidden="true"@click="back">&laquo;</span>
-            </a>
-          </li>
-          <li><a href="#">1</a></li>
-          <li><a href="#">2</a></li>
-          <li><a href="#">3</a></li>
-          <li><a href="#">4</a></li>
-          <li><a href="#">5</a></li>
-          <li>
-            <a href="#" aria-label="Next">
-              <span aria-hidden="true"@click="next">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <!--侧边栏-->
+      <div id="rightAside">
+
+        <div style="margin-top: 30px;">
+          <p><el-button style="width: 160px;" size="medium" @click="addAct">发布活动</el-button></p>
+          <p><el-button style="width: 160px;" size="medium" @click="myAct">我的活动</el-button></p>
+          <router-link to="/activity"><p><el-button style="width: 160px;" size="medium">查看全部活动</el-button></p></router-link>
+        </div>
+
+        <div style="margin-top: 30px;">
+          <div>
+            <h4 style="color: #8a6d3b">热门地点：</h4>
+            <router-link to="/activity/拙政园"><el-button  size="medium" type="primary" plain>拙政园</el-button></router-link>
+            <router-link to="/activity/寒山寺"><el-button size="small" type="success" plain>寒山寺</el-button></router-link>
+            <router-link to="/activity/平江路"><el-button style="margin-top: 10px"size="small" type="info" plain>平江路</el-button></router-link>
+            <router-link to="/activity/金鸡湖"><el-button style="width: 100px;margin-top: 10px" type="small" plain>金鸡湖</el-button></router-link>
+            <router-link to="/activity/博物馆"><el-button style="margin-top: 10px" size="medium" type="primary" plain>博物馆</el-button></router-link>
+            <router-link to="/activity/枫桥"><el-button size="small"type="warning" plain>枫桥</el-button></router-link>
+          </div>
+
+          <!--<el-button type="medium" plain>金鸡湖</el-button>-->
+        </div>
+      </div>
     </div>
+
+    <!--分页-->
+    <div class="block">
+      <span class="demonstration"></span>
+      <el-pagination ref="elpage"
+                     background
+                     @current-change="change()"
+                     :current-page.sync="pageIndex"
+                     layout="prev, pager, next"
+                     :total="pageCount"
+                     :page-size = "pagesize"
+      >
+      </el-pagination>
+    </div>
+
+    <div >
+
+    </div>
+
   </div>
 </template>
 
@@ -73,17 +105,21 @@
     name: "Activitys",
     data(){
       return {
+        id:'',
+        pageIndex: 1,
+        pagesize: 6,
+        pageCount:0,
+
         myActData:[],
         activitys:[],
-        pageindex:0,
-        pagecount:2,
         dataimg: [
           {src: require('../../assets/activityImg/01.jpg'),},
           {src: require('../../assets/activityImg/02.jpg'),},
           {src: require('../../assets/activityImg/03.jpg'),},
           {src: require('../../assets/activityImg/04.jpg'),}
         ],
-        num:4
+        name:'',
+        checkName:''
       }
     },
     computed:{
@@ -92,99 +128,181 @@
       },
       headPic(){
         return this.$store.state.userInfo.headPic;
+      },
+      myActData1() {
+        return this.activitys
       }
     },
+    watch:{
+      "$route":"getAllData"
+    },
     methods:{
+      getDetails(){
+        this.$router.push({path:`'/activitys/${item.activityId}'`})
+      },
       addAct(){
-        this.$router.push({path:'/activitys/addAct'})
+        if(sessionStorage.getItem("userId")==null){
+          alert('您还没有登录，请您先登录哦...')
+          this.$router.push({path:'/login'})
+        }else{
+          this.$router.push({path:'/activitys/addAct'})
+        }
       },
-      back(){
-        this.num-=4
+      myAct(){
+        if(sessionStorage.getItem("userId")==null) {
+          alert('您还没有登录，请您先登录哦...')
+        }else{
+          this.$router.push({path:'/personalCenter/joinAct'})
+        }
       },
-      next(){
-        this.num+=4
+      loadData() {
+        this.activitys = [];
+        // console.log('this.pageInedx:' + this.pageIndex)
+        // console.log('this.pageCount:' + this.pageCount)
+        let start = (this.pageIndex-1) * this.pagesize;
+        let end = start + this.pagesize;
+        //pageindex:0 , start:0 ; end:4
+        //pageindex:1 , start: 4; end:8
+        //pageindex:2 , start:8 ; end:12
+        //pageindex:3 , start:6 ; end:8
+        console.log(this.myActData[1]);
+        if(end>=this.pageCount){
+          end=this.pageCount
+        }
+        for (var i = start; i < end; i++) {
+          this.activitys.push(this.myActData[i])
+        }
+      },
+      change() {
+        // alert(this.pageIndex)
+        this.loadData()
+      },
+      getAllData(){
+        let _this=this
+        // console.log("bbb")
+
+        if(this.$route.params.activityTitle!=undefined){
+          let activityTitle=this.$route.params.activityTitle
+          axios.get(`http://localhost:3000/activity/actData/${activityTitle}`).then((result) =>{
+            _this.myActData= result.data.data;
+            console.log(result.data.data)
+            _this.id=result.data.data.avtivityId;
+            console.log(result.data)
+            _this.pageCount=_this.myActData.length
+            _this.loadData()
+          })
+        }else{
+          console.log("ccc")
+          axios.get("http://localhost:3000/activity").then((result) =>{
+            _this.myActData= result.data.data;
+            console.log(result.data.data)
+            _this.id=result.data.data.avtivityId;
+            console.log(result.data)
+            _this.pageCount=_this.myActData.length
+            _this.loadData()
+          })
+        }
       }
+
     },
     //挂载 动态生成数据
     mounted(){
-      axios.get("http://localhost:3000/activity").then((result) =>{
-        this.myActData= result.data.data;
-        console.log(result.data)
-        for(var i = 0 ; i < 4; i++){
-          this.activitys.push(this.myActData[i])
-        }
-      })
+      console.log("aaaaaaa")
+      this.getAllData();
     },
+
   }
 </script>
 
 <style scoped>
-  #nav{margin-left: 230px}
-  #addBtn{
-    margin-left:300px;
-  }
-  #actShow{
-    width: 800px;
-    height: 760px;
-    border: 1px black solid;
-  }
-  #headPic{
-    height: 70px;
-    width: 70px;
-    border-radius: 40px;
-    /*border: 1px black solid;*/
-  }
-  #headPic img{
-     width: 70px;
-     height: 70px;
-     border-radius: 35px;
-     position: relative;
-    margin-left: 10px;
-    margin-top: 10px;
-   }
-  #actInner{
-    width: 290px;
-    height: 340px;
-    background-color:bisque;
-    /*border: 1px black solid;*/
-    float: left;
-    margin-left: 40px;
-    margin-top: 20px;
-    text-align: center;
-    border-radius: 10px;
-    box-shadow: 2px 2px 20px 5px gainsboro ;
-  }
-#showBtn{margin-left: 80px}
-  #actShow :hover{
-    transform:scale(1.1);
-  }
+
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    width: 100%;
-    height: 30%;
+    /*width: 80%;*/
+    height: 40%;
+    /*margin: 0 auto;*/
     position: relative;
-    margin-left: 0.1%;
-    margin-top: 0;
+    /*margin-left: 0.1%;*/
+    margin-top: 20px;
     z-index:1;
   }
+  /*版心设置*/
   #main{
     width: 1200px;
-    height: 1000px;
+    /*height: 680px;*/
     margin: 0 auto;
+    margin-top: 10px;
     /*border: 1px solid black;*/
+    background-color: #eeee;
   }
-  /*#actInner>p:last-child{*/
-    /*font-size: 30px;*/
-    /*background-color: black;*/
-  /*}*/
+  /*活动外围*/
+  #actShow{
+    width: 1000px;
+    /*height: 680px;*/
+    /*border: 1px solid black;*/
+    float: left;
+  }
+  /*每个活动内容*/
+  #actInner{
+    width: 280px;
+    height: 280px;
+    float: left;
+    margin-left: 30px;
+    /*border: 1px solid black;*/
+    margin-top: 30px;
+  }
+  /*活动图片*/
+  #img img{
+    width: 280px;
+    height: 230px;
+    /*border: 1px solid black;*/
+    position: relative;
+  }
+  /*图片下面简介*/
+  #word1{
+    width: 280px;
+    height: 50px;
+    /*border: 1px solid black;*/
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    background-color: white;
+  }
+  /*侧边栏*/
+  #rightAside{
+    width: 250px;
+    height: 660px;
+    border: 1px solid transparent;
+    margin-left: 950px;
+    background-color: beige;
+  }
+  /*分页*/
+  .block{margin-left: 550px}
+  /*悬浮放大效果*/
+  #actInner :hover{transform:scale(1.01);}
+  #imgInner{
+    width: 280px;
+    height: 230px;
+    position: absolute;
+    bottom: 0px;
+    border: black 1px solid;
+    display: none;
+    text-align: center;
+  }
+  #actInner :hover #imgInner{
+    display: block;
+    opacity:0.6;
+    color: white;
+    background-color: black;
+  }
   #myp{
+    padding-top: 50px;
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
   }
-
 </style>

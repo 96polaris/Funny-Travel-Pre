@@ -4,14 +4,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state:{
-    // userInfo:{
-    //   userName:'',
-    //   userPhone:'',
-    //   userPwd:'',
+    userInfo:{
+      userName:'',
+      userPhone:'',
+      userPwd:'',
       userId:'',
-    // }
-    userName:''
-
-
+      headPic:''
+    }
   },
 })

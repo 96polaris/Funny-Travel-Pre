@@ -1,5 +1,5 @@
 <template>
-  <div id="forget">
+  <div class="registry">
     <el-steps :active="active+1" class="step" finish-status="success" simple style="margin-top: 20px">
       <el-step title="验证手机号"></el-step>
       <el-step title="用户名及密码设置"></el-step>
@@ -44,6 +44,8 @@
       var validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
+        } else if(value.length<6){
+          callback(new Error('密码长度应大于六位'));
         } else {
           if (this.ruleForm2.checkPass !== '') {
             this.$refs.ruleForm2.validateField('checkPass');
@@ -84,24 +86,49 @@
     methods: {
       getmessage(){
         let _this=this
-        for(let i =0;i<6;i++){
-          this.code += Math.floor(Math.random()*10);
-          console.log(this.code);
+        this.code=''
+        console.log(_this.ruleForm2.phone);
+        if(_this.ruleForm2.phone.length<11){
+          alert('手机号格式错误')
+        }else{
+          axios({
+            method: 'post',
+            url: 'http://localhost:3000/users/checkuser',
+            data:{
+              userPhone:_this.ruleForm2.phone
+            }
+          }).then(function (result) {
+            console.log("123" + result.data);
+            if (result.data.data == -1) {
+              alert('用户已存在!')
+              _this.ruleForm2.phone=''
+            } else {
+              for (let i = 0; i < 6; i++) {
+                _this.code += Math.floor(Math.random() * 10);
+              }
+              console.log(_this.code);
+              //手机验证码发送
+              // axios({
+              //   method:'get',
+              //   url:'http://v.juhe.cn/sms/send?mobile='+_this.phone+'&tpl_id=108216&tpl_value=%23code%23%3D'+_this.code+ '&key=aca2c573f614de2336213f17d3b0f51f'
+              // }).then(function () {
+              // })
+            }
+          })
         }
-        // axios({
-        //   method:'get',
-        //   url:'http://v.juhe.cn/sms/send?mobile='+_this.phone+'&tpl_id=108216&tpl_value=%23code%23%3D'+_this.code+ '&key=aca2c573f614de2336213f17d3b0f51f'
-        // }).then(function () {
-        // })
+
       },
       next() {
         let _this=this
         if(this.active==0){
-            if (this.checkmsg==this.code) {
+
+            if (this.checkmsg==this.code && _this.ruleForm2.phone!='') {
               this.active++
+            }else if(_this.checkmsg==''){
+              alert('验证码不能为空')
             }else{
-              alert('短信验证码错误')
-              this.checkmsg=''
+              alert('验证码错误')
+              _this.checkmsg=''
             }
         }
         else if(this.active==1){
@@ -137,9 +164,9 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('修改成功!');
+            alert('成功!');
           } else {
-            console.log('修改失败!!');
+            console.log('失败!!');
             return false;
           }
         });
@@ -152,13 +179,13 @@
 </script>
 
 <style scoped>
-  #forget {
-    width: 90%;
-    height: 90%;
-    position:absolute;
-    float: left;
-    margin-left: 5%;
-    background-color: white;
+  .registry {
+    width: 1200px;
+    height: 400px;
+    /*position:absolute;*/
+    /*float: left;*/
+    /*margin-left: 5%;*/
+    /*background-color: white;*/
   }
 
   .step {

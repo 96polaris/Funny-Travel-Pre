@@ -1,30 +1,30 @@
 <template>
   <div>
-    <div id="s3">
-      <youji-luobotu></youji-luobotu>
-      <hr>
-      <div id="s1">
-        <div id="s5">
-          <el-button type="warning" @click="toggleTabs='my-tuijian'">推荐精品</el-button>
-          <el-button type="warning" @click="toggleTabs='my-remen'">热门游记</el-button>
-          <el-button type="warning" @click="toggleTabs='my-zuixin'">最新发布</el-button>
+    <youji-luobotu></youji-luobotu>
+    <div id="bx">
+      <div id="s3">
+        <hr>
+        <div id="s1">
+          <div id="s5">
+            <el-button type="warning" @click="toggleTabs='my-tuijian'">推荐精品</el-button>
+            <el-button type="warning" @click="toggleTabs='my-remen'">热门游记</el-button>
+            <el-button type="warning" @click="toggleTabs='my-zuixin'">最新发布</el-button>
+          </div>
+          <br>
+          <component :is="toggleTabs"></component>
         </div>
-        <div id="s4">
-          <ul class="nav nav-pills">
-            <router-link tag="li" active-class="active" role="presentation" to="/user/myyouji" exact><a>我的游记</a></router-link>
-            <router-link tag="li" active-class="active" role="presentation" to="/user/addyouji"><a>添加游记</a></router-link>
-          </ul>
+        <div id="s2">
+          <my-notice></my-notice>
         </div>
-        <br>
-        <component :is="toggleTabs"></component>
+        <div id="s6">
+          <my-zuozhe></my-zuozhe>
+        </div>
       </div>
-      <div id="s2">
-        <my-notice></my-notice>
-      </div>
+      <router-view></router-view>
     </div>
-  <router-view></router-view>
-  </div>
 
+
+  </div>
 
 </template>
 <script>
@@ -34,7 +34,7 @@
   import luobotu from './luobutu'
   import notice from './Notice'
   import Route from "../Home/Route";
-
+  import shou from "../chen Travelnote/shoufengqing";
   export default {
     name: "youji",
     data: {
@@ -47,6 +47,7 @@
       'my-remen': remen,
       'my-zuixin': zuixin,
       'my-notice': notice,
+      'my-zuozhe':shou,
     },
     data() {
       return {
@@ -61,27 +62,39 @@
 </script>
 
 <style scoped>
+  #bx{
+    width: 1200px;
+    margin: 0 auto;
+  }
+
   #s1 {
-    width: 900px;
+    width: 850px;
     height: 1600px;
-    background-color: #c2fc82;
+    background-color: #e4f6e7;
     margin-left: 100px;
     float: left;
 
   }
 
   #s2 {
-    width: 250px;
-    height: 250px;
-    margin-right: 50px;
+    width: 200px;
+    height: 220px;
+    margin-right: 10px;
     float: right;
-    background-color: #c9f3fa;
+    background-color: #e9fafa;
   }
+  #s6 {
+    width: 200px;
 
+    margin-right: 10px;
+    margin-top: 50px;
+    float: right;
+    background-color: #e9fafa;
+  }
   #s3 {
     width: 100%;
     background-color: whitesmoke;
-    height: 2200px;
+    height: 1700px;
   }
 
   #s4 {

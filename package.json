@@ -68,11 +68,11 @@
   "main": ".postcssrc.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/96polaris/my-route-proj.git"
+    "url": "git+https://github.com/96polaris/Funny-Travel.git"
   },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/96polaris/my-route-proj/issues"
+    "url": "https://github.com/96polaris/Funny-Travel/issues"
   },
-  "homepage": "https://github.com/96polaris/my-route-proj#readme"
+  "homepage": "https://github.com/96polaris/Funny-Travel#readme"
 }

@@ -1,0 +1,99 @@
+
+import HelloWorld from '@/components/HelloWorld'
+
+//导入组件
+
+import center from '../components/Home/Center.vue'
+import userLogin from '../components/User/userLogin.vue'
+// import userRegistry from '../components/User/userRegistry.vue'
+import userRegistry from '../components/User/registry.vue'
+//游记部分
+//chen
+import youji from '../components/chen Travelnote/youji.vue'
+import user from '../components/User/personal'
+import addyouji from '../components/chen Travelnote/youji_tianjia.vue'
+import youjixiangqing from '../components/chen Travelnote/youji_xiangqing.vue'
+import myyouji from '../components/chen Travelnote/my_youji.vue'
+
+//个人中心
+import personal from '../components/User/personal.vue'
+import personalMessage from '../components/User/personalMessage.vue'
+import perCollect from '../components/User/perCollect.vue'
+import joinAct from '../components/User/joinAct.vue'
+
+
+
+//景点和线路部分
+import Router from 'vue-router'
+// import Home from '../components/Home'
+import Scenic from '../components/scenic/Scenic'
+import Routeline from '../components/routeline/Routeline'
+import Scenicimage from '../components/scenic/Scenicimage'
+import Sceniclocation from '../components/scenic/Sceniclocation'
+import Scenicdetails from '../components/Scenicdetails'
+import Wuzhongqu from '../components/scenic/wuzhongqu'
+import Yuanqu from '../components/scenic/yuanqu'
+import Gaoxingqu from '../components/scenic/gaoxinqu'
+import Kunshan from '../components/scenic/kunshan'
+import Xiangcheng from '../components/scenic/xiangcheng'
+import Zhangjiagang from '../components/scenic/zhangjiagang'
+import Taicang from '../components/scenic/taicang'
+import Changshu from '../components/scenic/changshu'
+import Gusuqu from '../components/scenic/gusuqu'
+import Oneday from '../components/routeline/oneday'
+import Twoday from '../components/routeline/twoday'
+import Threeday from '../components/routeline/threeday'
+import Routedetails from '../components/Routedetails'
+import Pagenumber from '../components/Pagenumber'
+
+
+export const routes=[
+  {path:'/',component:center},
+  {path:'/login',component:userLogin},
+  // {path:'/registry',component:userRegistry},
+  {path:'/registry',component:userRegistry},
+
+
+  //游记部分
+  {path: '/youji', component: youji},
+  {path: '/youji/youjixq/:id', component: youjixiangqing},
+
+  {path: '/user/addyouji', component: addyouji},
+  {path: '/user/myyouji', component: myyouji},
+
+
+  //个人中心
+  {path:'/personal',component:personal,children:[
+      {path:'personalMessge',component:personalMessage},
+      {path:'joinAct',component:joinAct},
+      {path:'perCollect',component:perCollect},
+    ]},
+
+
+
+  // 景点和线路部分
+  {
+    path: '/scenic', component: Scenic, children: [
+      {path: 'wuzhongqu', component: Wuzhongqu},
+      {path: 'yuanqu', component: Yuanqu},
+      {path: 'gaoxinqu', component: Gaoxingqu},
+      {path: 'kunshan', component: Kunshan},
+      {path: 'xiangcheng', component: Xiangcheng},
+      {path: 'zhangjiagang', component: Zhangjiagang},
+      {path: 'taicang', component: Taicang},
+      {path: 'changshu', component: Changshu},
+      {path: 'gusuqu', component: Gusuqu},
+      {
+        path: '/routeline', component: Routeline, children: [
+          {path: 'oneday', component: Oneday},
+          {path: 'twoday', component: Twoday},
+          {path: 'threeday', component: Threeday},
+        ]
+      },
+      {path: '/pagenumber', component: Pagenumber},
+      {path: '/scenicdetails', component: Scenicdetails},
+      {path: '/routedetails', component: Routedetails},
+    ]
+  }
+
+  ]
