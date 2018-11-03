@@ -36,7 +36,7 @@
 </template>
 
 <script>
-  import Sceniclocation from './Sceniclocation1'
+  import Sceniclocation from './Sceniclocation'
 
   //import Wuzhongqu from 'wuzhongqu'
     export default {
