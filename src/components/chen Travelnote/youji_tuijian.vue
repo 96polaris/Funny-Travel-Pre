@@ -83,17 +83,37 @@
                 this.loadData()
       },
       dianzan(id) {
+        let _this = this;
         if (this.dianji == false) {
           axios.get(`http://localhost:3000/travelnote/dz/${id}`).then(function (result) {
-            this.user = result.data;
+            _this.user = result.data;
             console.log(result.data)
+            //点赞成功后，重新调用接口，刷新页面
+            axios.get("http://localhost:3000/travelnote/tuijianNote").then((result) => {
+              console.log(123);
+              console.log(result.data)
+              _this.mydata = result.data.data;
+              _this.pagecount = _this.mydata.length;
+              console.log(_this.mydata)
+              _this.loadData()
+            })
+
+
           })
           alert("点赞成功")
-          this.dianji = true
+          _this.dianji = true
                } else {
-          axios.get(`http://localhost:3000/qxdianzan/${id}`).then(function (result) {
-            this.user = result.data;
+          axios.get(`http://localhost:3000/travelnote/qxdianzan/${id}`).then(function (result) {
+            _this.user = result.data;
             console.log(result.data)
+            //点赞取消成功后，重新调用接口，刷新页面
+            axios.get("http://localhost:3000/travelnote/tuijianNote").then((result) => {
+              console.log(123+result.data)
+              _this.mydata = result.data.data;
+              _this.pagecount = _this.mydata.length;
+              console.log(_this.mydata)
+              _this.loadData()
+            })
           })
           alert("取消成功")
           this.dianji = false

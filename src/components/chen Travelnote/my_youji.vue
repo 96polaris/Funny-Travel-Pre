@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 1200px;">
     <div id="bx">
       <div id="s3">
         <div class="s1" v-for="item in mydata">

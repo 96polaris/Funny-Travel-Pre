@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <div id="hh2">
       <div id="s1" v-for="item in currentData1">
         <router-link :to="'/youji/youjixq/'+item.travelNoteId" style="text-decoration:none;"><p class="title">
@@ -83,20 +83,45 @@
         this.loadData()
       },
       dianzan(id) {
+        let _this = this;
         if (this.dianji == false) {
           axios.get(`http://localhost:3000/travelnote/dz/${id}`).then(function (result) {
-            this.user = result.data;
-            console.log(result.data)
+            _this.user = result.data;
+            console.log(result.data);
+            //点赞成功后，重新调用接口，刷新页面
+            axios.get("http://localhost:3000/travelnote/hotNote").then((result) => {
+              console.log(123);
+              console.log(result.data)
+              _this.mydata = result.data.data;
+              _this.pagecount = _this.mydata.length;
+              console.log(_this.mydata)
+              _this.loadData()
+            })
+
           })
           alert("点赞成功")
           this.dianji = true
+
+
+
         } else {
-          axios.get(`http://localhost:3000/qxdianzan/${id}`).then(function (result) {
-            this.user = result.data;
+          //取消点赞
+          axios.get(`http://localhost:3000/travelnote/qxdianzan/${id}`).then(function (result) {
+            _this.user = result.data;
             console.log(result.data)
+            console.log(456);
+            //点赞取消成功后，重新调用接口，刷新页面
+            axios.get("http://localhost:3000/travelnote/hotNote").then((result) => {
+              console.log(123+result.data)
+              _this.mydata = result.data.data;
+              _this.pagecount = _this.mydata.length;
+              console.log(_this.mydata)
+              _this.loadData()
+            })
           })
           alert("取消成功")
           this.dianji = false
+
         }
       }
     },
@@ -127,6 +152,7 @@
   }
   #hh2{
     height: 1425px;
+    /*width: 800px;*/
 
   }
   .title {

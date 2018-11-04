@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 1200px;margin: 0 auto">
     <youji-luobotu></youji-luobotu>
     <div id="bx">
       <div id="s3">
@@ -63,7 +63,7 @@
 
 <style scoped>
   #bx{
-    width: 1200px;
+    /*width: 1200px;*/
     margin: 0 auto;
   }
 

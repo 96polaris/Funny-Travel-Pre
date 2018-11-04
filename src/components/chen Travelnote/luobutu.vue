@@ -1,6 +1,6 @@
 <!--轮播图-->
 <template>
-  <div>
+  <div style="width: 1200px;">
     <div id="app">
       <el-row :gutter="0">
         <el-carousel :interval="2000" type="card" arrow="never" height="360px" >
@@ -45,7 +45,7 @@ return{
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    width: 100%;
+    width: 1200px;
     height: 30%;
     position: relative;
     margin-left: 0.1%;
