@@ -10,7 +10,7 @@
         </div>
 
         <div id="xy">
-          <p><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>我也写篇游记吧</p>
+          <p><span class="glyphicon glyphicon-edit addyj" aria-hidden="true" @click="addyj"></span>我也写篇游记吧</p>
           <!--<router-link tag="li" active-class="active" role="presentation" to="/user/myyouji" exact><a>我的游记</a></router-link>-->
           <hr style="border:1px solid gainsboro; ">
           <div id="yj">
@@ -104,6 +104,9 @@
 
     },
     methods: {
+      addyj(){
+        this.$router.push({path:'/user/addyouji'})
+      },
       pinglun() {
         if(sessionStorage.getItem('userId')==null){
           alert('请先登录！')
@@ -258,4 +261,7 @@
   float: right;
   margin-right: 100px;
 }
+  .addyj:hover{
+    cursor: pointer;
+  }
 </style>
