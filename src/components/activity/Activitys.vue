@@ -66,7 +66,9 @@
           <div>
             <h4 style="color: #8a6d3b">热门地点：</h4>
             <form action="" v-cloak>
-              <input style="width: 150px;" type="text" v-model="searchString" @keyup.13="searchOne">搜索
+              <input style="width: 150px;" type="text" v-model="searchString" @keyup.13="searchOne">
+              <router-link :to="`/activity/${this.searchString}`">搜索</router-link>
+
               <div  v-show="searchString" id="searchInner">
                 <ul>
                   <li v-for="act in searchAct">
