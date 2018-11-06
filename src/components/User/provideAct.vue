@@ -8,10 +8,10 @@
           <div style="padding: 14px;width: 260px;">
             <span>{{value.activityTitle}}</span>
           </div>
-          <div class="bottom clearfix">
+          <div class="bottom clearfix" style="padding-left:150px">
             <router-link :to="'/personalCenter/'+value.activityId"><el-button type="primary" round size="small">查看加入详情</el-button></router-link>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <router-link :to="`/activitys/${value.activityId}/editAct`"><el-button type="primary" round size="small">修改活动信息</el-button></router-link>
+            <!--<router-link :to="`/activitys/${value.activityId}/editAct`"><el-button type="primary" round size="small">修改活动信息</el-button></router-link>-->
             <!--<el-button type="primary" round size="small" @click="check(value.activityId)">查看加入详情</el-button>-->
           </div>
         </el-card>
