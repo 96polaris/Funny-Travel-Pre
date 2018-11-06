@@ -78,28 +78,44 @@
     <el-tabs id="tab" v-model="activeName2" type="card" @tab-click="handleClick">
       <el-tab-pane label="评论中心" name="first" style="width: 200px;">
         <!--发表评论-->
-        <textarea style="margin-left: 20px" v-model="comText" name="" id="addComment" cols="159" rows="6"placeholder="等你来评论哦..."></textarea>
-        <button type="button" class="addbtn btn btn-info"@click="addComment">发表评论</button>
+        <p contenteditable="true" id="input_conta" style="margin-left: 20px" v-model="comText" name="" placeholder="等你来评论哦..."></p>
+
+
+        <div id="icon" style="width: 1100px;height: 35px;margin-left: 80px;">
+              <!-- 表情Icon，点击触发事件，动态生成表情并显示 -->
+          <div  style="float: left">
+            <span @click="flag=!flag" class="make_face"><img src="../../../static/eoim/p1.png" alt=""></span>
+          </div>
+
+              <!-- 表情容器 ，包裹生成的表情，绑定点击表情事件,v-html="eoimImg"解析字符串-->
+              <div id="face" style="width: 616px;height: 80px;background-color: white;border:1px solid #cccccc;margin-left: 35px;" @click=choice_face($event) v-if="flag" v-html="eoimImg">
+              </div>
+        </div>
+
+        <button type="button" class="addbtn btn btn-info"  @click="addComment">发表评论</button>
+
+
 
         <!--显示评论-->
         <div id="comments" v-for="com in actComments1">
+
           <div id="comImg"><img :src="com.userImage" alt=""></div>
           <div id="comContent">
             <h5>{{com.userName}} | {{com.activityTime}}</h5>
-            <h4><p>{{com.activityCommentContent}}</p></h4>
+            <h4><p v-html="com.activityCommentContent">{{com.activityCommentContent}}</p></h4>
             <div>
               <span class="glyphicon glyphicon-thumbs-up"
                     style="cursor:pointer"
                     aria-hidden="true"
                     @click="clickZan(com.activityCommentId)">（{{com.zan}}）
               </span>
-              <span style="cursor:pointer;font-size: 16px" v-on:click="reply()">| 回复</span>
+              <span style="cursor:pointer;font-size: 16px" v-on:click="reply()"></span>
             </div>
             <hr style="border: 0.5px brown solid">
             <!--显示回复的评论-->
-            <div v-for="item in replyData">
-              <p>{{item.replyContent}}</p>
-            </div>
+            <!--<div v-for="item in replyData">-->
+              <!--<p v-html="item.replyContent"></p>-->
+            <!--</div>-->
           </div>
 
           <!--回复评论-->
@@ -108,7 +124,7 @@
             <button type="button" class="addbtn btn btn-info"@click="replyComment(com.activityCommentId)">确认回复</button>
           </div>
         </div>
-
+        <div style="width: 350px;margin-left: 30px;font-size: 18px; " v-if="type">还没有人评论哦，快来写下第一条神评吧...</div>
         <!--分页-->
         <div class="block">
           <span class="demonstration"></span>
@@ -162,11 +178,14 @@
 </div>
 </template>
 <script>
+  import $ from 'jquery'//加载jquery，需要安装npm install jquery -S
   import axios from 'axios'
     export default {
       name: "AddAct",
       data(){
         return {
+
+          flag:false,
           fbusers:'',
           oneUser:[],
 
@@ -203,7 +222,11 @@
           isDisable:false,
 
           actComId:[],
-          click:false
+          click:false,
+
+          type:false,
+
+          eoimImg:""
         }
       },
       computed:{
@@ -212,6 +235,16 @@
         }
       },
       methods:{
+        choice_face(e){
+          if(e.target.nodeName=="IMG"){
+            var choice=e.target;
+            //深度复制，复制节点下面所有的子节点 ，直接将整个表情的IMG标签复制，并添加到发布框的<p></p>里面
+            var cEle = choice.cloneNode(true);
+            console.log(cEle);
+            $("p#input_conta").append(cEle);
+            this.flag = false;
+          }
+        },
         reply(){
           this.type=!this.type
         },
@@ -354,7 +387,7 @@
           if(this.userId==null){
             alert('请你先登录哦...')
             this.$router.push({path:'/login'})
-          } else if(this.comText==''){
+          } else if($('#input_conta').html()==''){
             alert('你还没有输入评论内容哦')
           }else{
             console.log('-----------------'),
@@ -363,7 +396,7 @@
             axios.post('http://localhost:3000/activity/end',{
               // activityCommentId:12,
               activityTime:new Date().toLocaleString(),
-              activityCommentContent:this.comText,
+              activityCommentContent:$('#input_conta').html(),
               userId: sessionStorage.getItem("userId"),
               activity_activityId:this.id,
             }).then((response)=>{
@@ -376,10 +409,9 @@
               })
               if(response.data.data.affectedRows==1) {
                 alert('评论成功！')
-                this.comText=''
+                $('#input_conta').html('')
               }else{
                 alert('评论失败！')
-                this.comText=''
               }
                 // window.location.reload()
             }).catch((err)=>{
@@ -428,6 +460,7 @@
 
       //挂载  动态生成数据
       mounted(){
+
         let _this = this;
         // 某一条活动
         axios.get(`http://localhost:3000/activity/details/${_this.id}`).then((result) =>{
@@ -457,6 +490,11 @@
         axios.get(`http://localhost:3000/activity/comment/${this.id}`).then((res) =>{
           let _this=this
           _this.actComments= res.data.data;
+          if(_this.actComments.length==0){
+            this.type=true
+          }else{
+           this.type=false
+          }
           console.log('---------------')
           console.log(_this.actComments);
           for(var i = 0 ; i <  _this.actComments.length; i++){
@@ -477,13 +515,16 @@
 
 
         })
+        for(var i=1;i<=60;i++) {
+          this.eoimImg += `<img src="../../../static/eoim/p${i}.png"  width="20px" height="20px" style="margin-left: 10px;margin-top: 3px">`;
+        }
+      }
 
-
-      },
     }
 </script>
 
 <style scoped>
+
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -541,7 +582,7 @@
   .mesg{margin-top: 5px}
 #btn1{margin-left: 555px;margin-top: 20px}
 #tab{margin-top: 20px}
-.addbtn{margin-left: 950px;margin-top: 10px}
+.addbtn{margin-left: 950px;position: relative;bottom: 35px}
   .tword{margin-top: 20px;margin-left: 20px;margin-bottom: 20px}
   #comImg{float: left;margin-top: 10px}
   #comImg img{
@@ -552,9 +593,20 @@
   }
   #comContent{
     width: 1000px;
-    height: 108px;
+    height: 113px;
     border: 1px solid transparent;
     margin-left: 100px;
   }
-.block{margin-left: 500px}
+.block{margin-left: 500px;margin-top: 10px}
+  #icon img{
+    width: 30px;
+    height: 30px;
+  }
+  #input_conta{
+    width: 1150px;
+    height: 100px;
+    border: black solid 1px;
+    /*margin-left: 50px;*/
+  }
+  #face img{margin-top: 5px}
 </style>
