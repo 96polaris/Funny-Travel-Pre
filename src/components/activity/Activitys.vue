@@ -36,13 +36,14 @@
 
           <div id="img">
              <img :src="item.actImg" alt="">
-            <router-link :to="`/activitys/${item.activityId}`">       <div id="imgInner">
-
-              <h4><p id="myp">活动说明：{{item.activityIntroduce}}</p></h4>
-              <h4><p>活动主题：{{item.activityTitle}}</p></h4>
-              <h4><p>开始时间：{{item.beginTime.substr(0,10)}}</p></h4>
-              <h4><p>结束时间：{{item.endTime.substr(0,10)}}</p></h4>
-            </div></router-link>
+            <router-link :to="`/activitys/${item.activityId}`">
+              <div id="imgInner">
+                <h4><p id="myp">活动说明：{{item.activityIntroduce}}</p></h4>
+                <h4><p>活动主题：{{item.activityTitle}}</p></h4>
+                <h4><p>开始时间：{{item.beginTime.substr(0,10)}}</p></h4>
+                <h4><p>结束时间：{{item.endTime.substr(0,10)}}</p></h4>
+              </div>
+            </router-link>
           </div>
 
           <div id="word1">
@@ -64,8 +65,23 @@
         <div style="margin-top: 30px;">
           <div>
             <h4 style="color: #8a6d3b">热门地点：</h4>
-            <router-link to="/activity/拙政园"><el-button  size="medium" type="primary" plain>拙政园</el-button></router-link>
-            <router-link to="/activity/寒山寺"><el-button size="small" type="success" plain>寒山寺</el-button></router-link>
+            <form action="" v-cloak>
+              <input style="width: 150px;" type="text" v-model="searchString" @keyup.13="searchOne">搜索
+              <div  v-show="searchString" id="searchInner">
+                <ul>
+                  <li v-for="act in searchAct">
+                    <router-link :to="`/activitys/${act.activityId}`">{{act.activityTitle}}</router-link>
+
+                    <!--{{act.activityTitle}}-->
+                  </li>
+                  <li v-if="hasNoData">您查找的活动不存在哦</li>
+                </ul>
+
+              </div>
+            </form>
+
+            <router-link to="/activity/拙政园"><el-button style="margin-top: 10px" size="medium" type="primary" plain>拙政园</el-button></router-link>
+            <router-link to="/activity/寒山寺"><el-button style="margin-top: 10px" size="small" type="success" plain>寒山寺</el-button></router-link>
             <router-link to="/activity/平江路"><el-button style="margin-top: 10px"size="small" type="info" plain>平江路</el-button></router-link>
             <router-link to="/activity/金鸡湖"><el-button style="width: 100px;margin-top: 10px" type="small" plain>金鸡湖</el-button></router-link>
             <router-link to="/activity/博物馆"><el-button style="margin-top: 10px" size="medium" type="primary" plain>博物馆</el-button></router-link>
@@ -118,11 +134,18 @@
           {src: require('../../assets/activityImg/03.jpg'),},
           {src: require('../../assets/activityImg/04.jpg'),}
         ],
-        name:'',
-        checkName:''
+        // name:'',
+        checkName:'',
+
+        searchString:'',
+        searchAct:[],
+        time:null
       }
     },
     computed:{
+      hasNoData(){
+        return !this.searchAct.length
+      },
       userName(){
         return this.$store.state.userInfo.userName;
       },
@@ -134,9 +157,35 @@
       }
     },
     watch:{
-      "$route":"getAllData"
+
+      'searchString':function () {
+        let _this=this;
+        axios.get('http://localhost:3000/activity/actData/'+`${_this.searchString}`).then(function (result){
+          console.log('==========='+_this.searchString)
+          _this.searchAct=result.data.data
+          console.log(result.data.data)
+        },function(err){
+          console.log(err)
+        })
+        if (this.timer) {
+          clearTimeout(this.timer)
+        }
+        if (!this.searchString){
+          this.searchAct = []
+          return
+        }
+      },
+      '$route'(to,from){
+        this.searchString=''
+        // "$route":"getAllData",
+      }
+
     },
     methods:{
+      searchOne(){
+
+        this.$router.push({path:`/activity/${this.searchString}`})
+      },
       getDetails(){
         this.$router.push({path:`'/activitys/${item.activityId}'`})
       },
@@ -203,7 +252,6 @@
           })
         }
       }
-
     },
     //挂载 动态生成数据
     mounted(){
@@ -242,8 +290,8 @@
   /*活动外围*/
   #actShow{
     width: 1000px;
-    /*height: 680px;*/
-    /*border: 1px solid black;*/
+    height: 645px;
+    border: 1px solid transparent;
     float: left;
   }
   /*每个活动内容*/
@@ -275,7 +323,7 @@
   /*侧边栏*/
   #rightAside{
     width: 250px;
-    height: 660px;
+    height: 645px;
     border: 1px solid transparent;
     margin-left: 950px;
     background-color: beige;
@@ -304,5 +352,14 @@
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
+  }
+  #searchInner ul{position: absolute;cursor: pointer}
+  #searchInner li{
+    border-bottom: 1px dashed black;
+    width: 150px;
+    margin-left: 10px;
+    background-color: white;
+    list-style: none;
+    line-height: 25px;
   }
 </style>
